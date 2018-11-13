@@ -1,0 +1,18 @@
+下载本项目之后，需手动在命令提示符添加依赖
+
+
+
+cnpm install
+
+cnpm install --save 
+lib-flexible
+
+cnpm install --save 
+weui
+
+cnpm install --save 
+lrz
+
+cnpm install 
+axios -S
+cnpm install --save iview
