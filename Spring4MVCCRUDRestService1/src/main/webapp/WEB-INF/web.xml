@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+
+	<!-- 
+	配置 org.springframework.web.filter.HiddenHttpMethodFilter: 可以把 POST 请求转为 DELETE 或 POST 请求 
+	-->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<servlet-name>mcpMvc</servlet-name>
+	</filter-mapping>
+	<!-- 配置 跨域访问 -->
+	<filter> <filter-name>cors</filter-name> 
+	<filter-class>com.websystique.springmvc.configuration.CORSFilter</filter-class> 
+	</filter> 
+	
+	<filter-mapping> <filter-name>cors</filter-name> 
+	<url-pattern>/*</url-pattern> 
+	</filter-mapping>
+
+
+	<!-- 配置 DispatcherServlet -->
+	<servlet>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		    
+		<init-param>  
+            <param-name>dispatchOptionsRequest</param-name>  
+            <param-value>true</param-value>  
+        </init-param> 
+		<!-- 配置 DispatcherServlet 的一个初始化参数: 配置 SpringMVC 配置文件的位置和名称 -->
+		<!-- 
+			实际上也可以不通过 contextConfigLocation 来配置 SpringMVC 的配置文件, 而使用默认的.
+			默认的配置文件为: /WEB-INF/<servlet-name>-servlet.xml
+		-->
+		<!--  
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc.xml</param-value>
+		</init-param>
+		-->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+
+<servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/photo/*</url-pattern>
+</servlet-mapping>
+
+	
+
+</web-app>
