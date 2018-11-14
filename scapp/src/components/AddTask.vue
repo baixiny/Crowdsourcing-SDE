@@ -110,13 +110,14 @@ export default {
         taskDesc: '',
         taskAddr: '',
         taskTime: 0,
+
         taskPrice: '',
         questions: [
           {
             value: '',
             index: 1,
             status: 1,
-            options: ['这是选项一', '这是选项二'],
+            options: [],
           }
         ]
       },
@@ -216,9 +217,9 @@ export default {
           })
         .then(function (response) {
               console.log(response.data.state);
-              alert("已提交");
-              self.$refs[name].resetFields();
-        }/*.bind(this)*/)
+              alert("发布任务成功");
+              this.$router.push({path:'/home',query:{page:1}});
+        }.bind(this))
         .catch(function (response) {
             console.log(response);
             self.msg = '网络连接失败:(';
