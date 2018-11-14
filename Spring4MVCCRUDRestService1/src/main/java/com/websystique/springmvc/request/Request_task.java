@@ -12,6 +12,7 @@ public class Request_task {
 	private String completeDate;
 	private String publishDate;
 	private String taskPrice;
+	private String taskTime;
 	private JSONArray questions;
 	private int answersLength;
 	public String getTaskName() {
@@ -26,8 +27,12 @@ public class Request_task {
 	public void setTaskDesc(String taskDesc) {
 		this.taskDesc = taskDesc;
 	}
-	
-	
+	public String getTaskTime(){
+		return taskTime;
+	}
+	public void setTaskTime(String taskTime){
+		this.taskTime = taskTime;
+	}
 	
 	
 
@@ -74,7 +79,7 @@ public class Request_task {
 	public String toString() {
 		return "Request_task [taskName=" + taskName + ", taskDesc=" + taskDesc + ", taskAddr=" + taskAddr
 				+ ", completeDate=" + completeDate + ", publishDate=" + publishDate + ", taskPrice=" + taskPrice
-				+ ", questions=" + questions + "]";
+				+ ", taskTime=" + taskTime + ", questions=" + questions + "]";
 	}
 	
 }

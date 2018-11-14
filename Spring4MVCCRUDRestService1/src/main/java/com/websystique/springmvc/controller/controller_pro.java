@@ -217,7 +217,7 @@ public class controller_pro {
 				String tsStr = sdf.format(answer.get(i).getTime()); 
 				m.setTime(tsStr);
 				m.setTitle(task.getDescription());
-				m.setIcon("http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+answer.get(i).getTid()+"/"+answer.get(i).getAid()+"/"+0);
+				m.setIcon("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+answer.get(i).getTid()+"/"+answer.get(i).getAid()+"/"+0);
 				lh.add(m);
 				  
 			}
@@ -267,7 +267,7 @@ public class controller_pro {
 				  JSONArray photojson=JSONArray.fromObject(ha.get(i).getPicpath());
 				  for(int j=0;j<photojson.size();j++) {
 					  Map<String,Object> lb=new HashMap<String,Object>();
-					  lb.put("icon", "http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+user.getTid()+"/"+ha.get(i).getAid()+"/"+j); 
+					  lb.put("icon", "http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+user.getTid()+"/"+ha.get(i).getAid()+"/"+j); 
 					  lablepic.add(lb);
 				  } 
 				}
@@ -307,7 +307,7 @@ public class controller_pro {
 			  JSONArray photojson=JSONArray.fromObject(ha.get(i).getPicpath());
 			  for(int j=0;j<photojson.size();j++) {
 				  Map<String,Object> lb=new HashMap<String,Object>();
-				  lb.put("icon", "http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+user.getTid()+"/"+ha.get(i).getAid()+"/"+j); 
+				  lb.put("icon", "http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+user.getUsername()+"/"+user.getTid()+"/"+ha.get(i).getAid()+"/"+j); 
 				  lablepic.add(lb);
 			  } 
 			}
@@ -351,11 +351,11 @@ public class controller_pro {
 					JSONArray photo=JSONArray.fromObject(answer.get(i).getPicpath());
 					JSONArray pic=new JSONArray();
 					for(int j=0;j<photo.size();j++) {
-						pic.add("http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+json.getString("username")+"/"+json.getInt("tid")+"/"+answer.get(i).getAid()+"/"+j);
+						pic.add("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+json.getString("username")+"/"+json.getInt("tid")+"/"+answer.get(i).getAid()+"/"+j);
 					}
 					jb.put("picpath",pic.toString());
 				}catch(Exception e1) {
-					jb.put("picpath", "http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+json.getString("username")+"/"+json.getInt("tid")+"/"+answer.get(i).getAid()+"/"+0);
+					jb.put("picpath", "http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+json.getString("username")+"/"+json.getInt("tid")+"/"+answer.get(i).getAid()+"/"+0);
 				}
 				DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				jb.put("answertime",sdf.format(answer.get(i).getTime()) );
@@ -592,10 +592,11 @@ public class controller_pro {
 				    		Task task=task_inter.findTask(tid);
 				    	System.out.println(username);
 				    	
+				    	
 				    	JSONArray jsonpath=new JSONArray();
 				           String resMsg = "";
 				        try {
-				        	long  startTime=System.currentTimeMillis();
+				        	long  startTime=System.currentTimeMillis();         
 				            for(int i=0;i<file.length;i++)
 				            {
 				            	String path="";
@@ -1044,6 +1045,7 @@ public class controller_pro {
 		       Task_inter task_inter=sqlSession.getMapper(Task_inter.class);
 		       List<Answer> answer=answer_inter.listAnswer();
 				Result_answer result =new Result_answer();
+				System.out.println("查找所有的answer");
 				if(answer.isEmpty()){
 					result.setStatus(1);
 					result.setError("error");
@@ -1068,16 +1070,18 @@ public class controller_pro {
 					data.setAnswer_desc("选项型");
 					data.setTask_type(task.getTasktype());
 					data.setPublish_place(answer.get(i).getLocation());
-					data.setPic("http://211.87.239.94:8080/Spring4MVCCRUDRestService/image/"+answer.get(i).getUsername()+"/"+answer.get(i).getTid());
+					data.setPic("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+answer.get(i).getUsername()+"/"+answer.get(i).getTid());
 					DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 					String tsStr = sdf.format(task.getDeadline());  
 					data.setAnswer_time(tsStr);
 					
 					data.setAnswer(JSONArray.fromObject(answer.get(i).getAnswer()));
+					System.out.println(data);
 					
 					dataList.add(data);
 					}
 					catch(Exception e) {
+						System.out.println("exception");
 						continue;
 					}
 					
@@ -1088,6 +1092,7 @@ public class controller_pro {
 				return new ResponseEntity<Result_answer>(result, HttpStatus.OK);
 			} 
 //----添加任务------
+			SimpleDateFormat pubtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 			@RequestMapping(value = "/task/addone", method = RequestMethod.POST)
 			public ResponseEntity<Result_task_one> submittask(@RequestBody res ret, UriComponentsBuilder ucBuilder) {
 				SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance();   //建立sqlSession的工厂，sqlSessionFactory中是对cof1.xml文件进行处理的
@@ -1103,11 +1108,22 @@ public class controller_pro {
 				task.setTasktype(ret.getData().getTaskName());
 				task.setDescription(ret.getData().getTaskDesc());
 				JSONObject lo=JSONObject.fromObject(ret.getData().getTaskAddr());
-				task.setLongitude(lo.getDouble("longitude"));
-				task.setLatitude(lo.getDouble("latitude"));
-				task.setLocation(lo.getString("location"));
-				task.setPublictime(Timestamp.valueOf(ret.getData().getPublishDate()) );
-				task.setDeadline(Timestamp.valueOf(ret.getData().getCompleteDate()));
+				String [] loc = lo.getString("location").split(",");
+				task.setLocation(lo.getString("name"));
+				task.setLatitude(Double.parseDouble(loc[1]) );
+				task.setLongitude(Double.parseDouble(loc[0]));
+				task.setPublictime(Timestamp.valueOf(pubtime.format(new Date())) );
+				
+				Date dtime = new Date();
+				System.out.println(dtime.toString());
+				try {
+					long deadtime = (long) (dtime.getTime() + Integer.parseInt(ret.getData().getTaskTime()) * 60 * 60 * 1000); //把当前得到的时间用date.getTime()的方法写成时
+					dtime = new Date(deadtime);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Timestamp deadline = Timestamp.valueOf(pubtime.format(dtime));
+				task.setDeadline(deadline);
 				JSONArray question=new JSONArray();
 				
 				for(int i=0;i<ret.getData().getQuestions().size();i++) {
@@ -1211,7 +1227,7 @@ public class controller_pro {
 			       Worker_inter worker_inter = sqlSession.getMapper(Worker_inter.class);  
 					List<Worker> workers=worker_inter.listWorker();
 					Result_worker_list result=new Result_worker_list();
-					
+					System.out.println("执行查询所有用户");
 					if(workers.isEmpty()){
 						result.setStatus(1);
 					

@@ -31,9 +31,9 @@
             <dataSource type="POOLED">  
                 <property name="driver" value="org.postgresql.Driver" />  
                 <property name="url"  
-                    value="jdbc:postgresql://211.87.239.36:5432/csdb?charSet=utf-8" />  
+                    value="jdbc:postgresql://211.87.239.31:5432/scdb?charSet=utf-8" />  
                 <property name="username" value="postgres" />  
-                <property name="password" value="123456" />  
+                <property name="password" value="552211xx" />  
             </dataSource>  
         </environment>  
     </environments>  
