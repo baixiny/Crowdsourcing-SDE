@@ -16,10 +16,11 @@ public class Task {
     private Integer answercount;
     private String status; 
     private String tasktype; 
+    private String answersnum;
     private Timestamp publictime;
     private Timestamp deadline;
-    
     private Object question;
+    
     public Integer getId() {  
     	
       return tid;
@@ -57,10 +58,19 @@ public class Task {
 	public String getLocation() {  
         return location;  
     }  
-  
+	
     public void setLocation(String location) {  
         this.location = location;  
     }  
+    
+    public void setAnswersnum(String answersnum) {  
+        this.answersnum = answersnum;  
+    }  
+    
+    public String getAnswersnum(){
+    	return answersnum;
+    }
+    
     public String getDescription() {  
         return description;  
     }  
@@ -108,6 +118,6 @@ public class Task {
     public String toString() {  
         return "{\"tid\":\"" + tid + "\", \"tasktype\":\"" + tasktype + "\", longitude\":\""  
                 + longitude + "\", latitude\":\"" +latitude + "\", \"location\":\"" +location+"\", \"description\":\"" +description+"\",\" publictime\":\"" +
-        		publictime+"\",\" deadline\":\"" +deadline+"\", \"answercount\":\"" +answercount+"\",\"status:\"" +status+"\",\" question\":\"" +question+"\"}";  
+        		publictime+"\",\" deadline\":\"" +deadline+"\", \"answercount\":\"" +answercount+"\",\"answersnum\":\"" +answersnum+"\",\"status:\"" +status+"\",\" question\":\"" +question+"\"}";  
     }  
 }
