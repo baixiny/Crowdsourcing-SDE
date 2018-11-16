@@ -28,6 +28,9 @@
       <FormItem label="时限/小时" prop="taskTime">
         <InputNumber :min="1" v-model="taskData.taskTime"></InputNumber>
       </FormItem>
+      <FormItem label="回答人数" prop="answersNum">
+        <InputNumber :min="1" v-model="taskData.answersNum"></InputNumber>
+      </FormItem>
       <FormItem label="奖励金" prop="taskPrice">
         <Input type="text" v-model="taskData.taskPrice" />
       </FormItem>
@@ -109,14 +112,15 @@ export default {
         taskName: '',
         taskDesc: '',
         taskAddr: '',
-        taskTime: 0,
+        taskTime: 1,
+        answersNum:10,
         taskPrice: '',
         questions: [
           {
             value: '',
             index: 1,
             status: 1,
-            options: ['这是选项一', '这是选项二'],
+            options: [],
           }
         ]
       },
@@ -138,7 +142,12 @@ export default {
         ],
         taskTime: [
           {
-            required: true, message: '必须输入任务时间'
+            required: true, message: '请输入任务时间，默认值为1小时'
+          }
+        ],
+        answersNum: [
+          {
+            required: true, message: '请输入期待回答问题的人数，默认值为10人'
           }
         ],
         taskPrice: [
@@ -216,9 +225,9 @@ export default {
           })
         .then(function (response) {
               console.log(response.data.state);
-              alert("已提交");
-              self.$refs[name].resetFields();
-        }/*.bind(this)*/)
+              alert("发布任务成功");
+              this.$router.push({path:'/home',query:{page:1}});
+        }.bind(this))
         .catch(function (response) {
             console.log(response);
             self.msg = '网络连接失败:(';
