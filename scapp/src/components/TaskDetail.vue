@@ -22,7 +22,7 @@
 		</div>
 		<div class="divDetailCCss">		
 			<label class="labTtlDetailcss">期望收到的回答数量</label>
-			<label class="divDetailContentCss">{{task.answercount}}</label>
+			<label class="divDetailContentCss">{{task.answersnum}}</label>
 		</div>
 		<div class="divDetailCCss">
 			<label class="labTtlDetailcss">当前进度</label>

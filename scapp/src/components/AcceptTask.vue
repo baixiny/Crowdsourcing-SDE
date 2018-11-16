@@ -126,7 +126,7 @@ import lrz from "lrz"
     /*  this.taskInfo=this.task;*/
       this.quesArray=this.task.qusetion; 
      
-      /*console.log(this.quesArray);*/
+      console.log(this.quesArray);
     /*var self = this;
         this.$ajax({
               method: 'PUT',
@@ -220,22 +220,24 @@ import lrz from "lrz"
               .then(response=>{
                   console.log(response.data);
                   if(response.data==1){
-                    alert("答案已提交");
+                    alert("答案和所附图片提交成功");
                     self.$router.push({path:'/home',query:{page:1}});
                   }
                     else{ 
-                      alert("请选择或拍照上传图片")
+                      alert("未附图片的答案提交成功");
+                      self.$router.push({path:'/home',query:{page:1}});
                   }
                 })
  
               .catch(function (response) {
               console.log(response);
-              alert("请选择或拍照上传图片");
+              alert("未附图片的答案提交成功");
+              self.$router.push({path:'/home',query:{page:1}});
               })
                
               
           }else if(response.data.state == 2){
-             alert("上传失败");  
+             alert("任务超时，上传失败");  
           }           
               
         })
