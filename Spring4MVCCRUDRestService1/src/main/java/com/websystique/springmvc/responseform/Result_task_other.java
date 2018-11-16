@@ -60,20 +60,25 @@ public class Result_task_other {
 			t.setLocation(task.get(i).getLocation());
 			t.setDescription(task.get(i).getDescription());
 			double m=answer_inter.countAnswer(task.get(i).getId());
-			double n=task.get(i).getAnswercount();
+			double n=Double.parseDouble(task.get(i).getAnswersnum());
 		
 			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 			String tsStr = sdf.format(task.get(i).getDeadline());  
-		  
+			
 		    t.setDeadline(tsStr);
 			t.setDistance((int)Math.abs(location.algorithm(x, y, task.get(i).getLongitude(), task.get(i).getLatitude())));
 			t.setLongitude(task.get(i).getLongitude());
 			t.setAltitude(task.get(i).getLatitude());
-			t.setSchedule(m/n*100+"%");
+			if(m==0){
+				t.setSchedule("0%");
+			}else{
+				t.setSchedule(m/n*100+"%");
+			}
 			t.setAnswercount(task.get(i).getAnswercount());
 			t.setTasktype(task.get(i).getTasktype());
 			t.setStatus(task.get(i).getStatus());
 			t.setQusetion(task.get(i).getQuestion());
+			t.setAnswersnum(task.get(i).getAnswersnum());
 			msg.add(t);
 			
 			}

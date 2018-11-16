@@ -529,6 +529,41 @@ public class controller_pro {
 				//----根据经纬度返回任务列表的概要---杨倩师姐
 				@RequestMapping(value="/task/gettask", method = RequestMethod.PUT)
 				public ResponseEntity<Result_task_other> gettask2(@RequestBody task_req res,UriComponentsBuilder ucBuilder){
+					 SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance();   //建立sqlSession的工厂，sqlSessionFactory中是对cof1.xml文件进行处理的
+				     SqlSession sqlSession = sqlSessionFactory.openSession();  
+					 Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
+					 Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
+					List<Task> task = task_inter.listTask();
+					try{
+						for(int i=0;i<task.size();i++)
+						{	
+							if(task.get(i).getStatus().equals("正在执行"));
+							{
+								DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+								String tsStr = sdf.format(task.get(i).getDeadline());  
+							  
+								Date nowtime = new Date();
+								long ntime = (long) (nowtime.getTime()); //把当前得到的时间用date.getTime()的方法写成时
+								long dtime = (long) (task.get(i).getDeadline().getTime());
+								if(ntime>=dtime){
+									task.get(i).setStatus("已完成");
+									//System.out.println(String.valueOf(task.get(i).getId())+"任务已完成");
+								}
+								else{
+									task.get(i).setStatus("正在执行");
+									//System.out.println(String.valueOf(task.get(i).getId())+"任务未完成");
+								}
+								task_inter.changeStatus(task.get(i));
+							}							
+						}						 
+						  sqlSession.commit();
+						  sqlSession.close();
+					}
+					catch (IllegalStateException e) {
+				          
+			        	e.printStackTrace();
+			        }
+					
 					Result_task_other result=new Result_task_other();
 						double x=res.getLongitude();
 						double y=res.getLatitude();
@@ -633,6 +668,7 @@ public class controller_pro {
 			try {
 						SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance(); 
 				        SqlSession sqlSession = sqlSessionFactory.openSession();  
+				        
 				        List<question> ql=new ArrayList<question>();
 				        for(int i=0;i<res.getQuestion().size();i++)
 				        {
@@ -644,23 +680,35 @@ public class controller_pro {
 						    ql.add(q);
 				        }
 				      Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
-				      int count=  answer_inter.listAnswer().size();
-				       Answer answer=new Answer();
-				       answer.setUsername(res.getUsername());
-				       answer.setLatitude(res.getLatitude());
-				       answer.setLongitude(res.getLongitude());
-				       answer.setLocation(res.getLocation());
-				       answer.setTime(new Timestamp(System.currentTimeMillis()));
-				       answer.setAnswer(ql);
-				       answer.setAid(count+1);
-				       aid=count;
-				       answer.setTid(res.getTid());
-				       System.out.println(answer);
-				       answer_inter.addAnswer(answer);
-				       sqlSession.commit();  
-				       sqlSession.close(); 
-				       result.setState(1);
-						    return new ResponseEntity<result_task_add>(result,HttpStatus.OK);
+				      Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
+				      Task task=task_inter.findTask(res.getTid());
+				      if(task.getStatus().equals("已完成"))
+				      {
+				    	  result.setState(2);
+				    	  System.out.println("任务TID"+String.valueOf(res.getTid()));
+				      }
+				      else{
+				    	  int count=  answer_inter.listAnswer().size();
+					       Answer answer=new Answer();
+					       answer.setUsername(res.getUsername());
+					       answer.setLatitude(res.getLatitude());
+					       answer.setLongitude(res.getLongitude());
+					       answer.setLocation(res.getLocation());
+					       answer.setTime(new Timestamp(System.currentTimeMillis()));
+					       answer.setAnswer(ql);
+					       answer.setAid(count+1);
+					       aid=count;
+					       answer.setTid(res.getTid());
+					       System.out.println(answer);
+					       answer_inter.addAnswer(answer);
+					       task.setAnswercount(answer_inter.countAnswer(res.getTid()));
+					       task_inter.answerCount(task);
+					       sqlSession.commit();  
+					       sqlSession.close(); 
+					       result.setState(1);
+					       System.out.println("else running"+String.valueOf(res.getTid()));
+				      }
+				      return new ResponseEntity<result_task_add>(result,HttpStatus.OK);
 						}catch(Exception e) {
 						result.setState(0);
 					result.setError("error");
@@ -1107,6 +1155,7 @@ public class controller_pro {
 				task.setAnswercount(ret.getData().getAnswersLength());
 				task.setTasktype(ret.getData().getTaskName());
 				task.setDescription(ret.getData().getTaskDesc());
+				task.setAnswersnum(ret.getData().getAnswersNum());
 				JSONObject lo=JSONObject.fromObject(ret.getData().getTaskAddr());
 				String [] loc = lo.getString("location").split(",");
 				task.setLocation(lo.getString("name"));

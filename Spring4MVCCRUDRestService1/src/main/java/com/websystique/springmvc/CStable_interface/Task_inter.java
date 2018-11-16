@@ -10,12 +10,18 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;  
 import org.apache.ibatis.annotations.Update; 
 public interface Task_inter {
-	@Insert("insert into task(tid,longitude,latitude,location,description,publictime,question,status,answercount,tasktype,deadline) values(#{tid},#{longitude},#{latitude},#{location},#{description},#{publictime},#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler},#{status},#{answercount},#{tasktype},#{deadline})")
+	@Insert("insert into task(tid,longitude,latitude,location,description,publictime,question,status,answercount,tasktype,deadline,answersnum) values(#{tid},#{longitude},#{latitude},#{location},#{description},#{publictime},#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler},#{status},#{answercount},#{tasktype},#{deadline},#{answersnum})")
 	public  Integer addTask(Task task);  
 	
 	@Update(" update task set tasktype=#{tasktype:VARCHAR} , longitude=#{longitude:DECIMAL},latitude=#{latitude:DECIMAL}, location=#{location:VARCHAR}, status=#{status:VARCHAR},answercount=#{answercount:INTEGER},description=#{description:VARCHAR},publictime=#{publictime:TIMESTAMP}, deadline=#{deadline:TIMESTAMP}, question=#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler}where tid=#{tid:INTEGER}") 
     public boolean updateTask(Task task);  
     
+	@Update(" update task set answercount=#{answercount:VARCHAR} where tid=#{tid:INTEGER}") 
+    public boolean answerCount(Task task);  
+	
+	@Update(" update task set status=#{status:VARCHAR} where tid=#{tid:INTEGER}") 
+    public boolean changeStatus(Task task);  
+	
 	@Delete(" delete from task where tid= #{tid:INTEGER}")
     public  boolean deleteTask(Integer TID);  
     

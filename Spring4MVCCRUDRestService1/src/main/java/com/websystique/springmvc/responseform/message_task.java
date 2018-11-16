@@ -22,6 +22,7 @@ public class message_task {
 	
 	private double distance;
 	private String schedule;
+	private String answersnum;
 	private Object qusetion;
 	
 	public String getStatus() {
@@ -92,12 +93,18 @@ public class message_task {
 	public void setSchedule(String schedule) {
 		this.schedule = schedule;
 	}
+	public String getAnswersnum(){
+		return answersnum;
+	}
+	public void setAnswersnum(String answersnum){
+		this.answersnum= answersnum;
+	}
 	@Override
 	public String toString() {
 		return "message_task [id=" + id + ", description=" + description + ", location=" + location + ", deadline="
 				+ deadline + ", longitude=" + longitude + ", altitude=" + altitude + ", status=" + status
 				+ ", tasktype=" + tasktype + ", answercount=" + answercount + ", qusetion=" + qusetion + ", distance="
-				+ distance + ", schedule=" + schedule + "]";
+				+ distance + ", schedule=" + schedule + ", answersnum="+ answersnum +"]";
 	}
 	
 	
