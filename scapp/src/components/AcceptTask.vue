@@ -29,19 +29,22 @@
                   
                     <div id="discount" class="labelStyle"> 
                      <label style="font-size: 12px"  v-if="item.qid=='q1'">
-                       {{labs.labledescription}}<input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       <input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       {{labs.labledescription}}
                      </label>
                      <label style="font-size: 12px" v-if="item.qid=='q2'">
-                       {{labs.labledescription}}<input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       <input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       {{labs.labledescription}}
                      </label>
                      <label style="font-size: 12px" v-if="item.qid=='q3'">
-                       {{labs.labledescription}}<input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       <input type="radio" v-model="picked[item.qid]" :value="labs.labledescription" />
+                       {{labs.labledescription}}
                      </label>
                     </div>
-                   </div>
+              </div>
 <!-- 丰富问题提交形式 -->
               <div class="sentence"> 
-              <p>已选：{{picked[item.qid]}}</p> 
+              <p>已选{{picked[item.qid]}}</p> 
                <br>
             </div>
         </div>

@@ -4,6 +4,9 @@
 			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: left"></label>
 			任务列表
 			<img src="../assets/icons/search.png" class="searchBtn" v-on:click="" >
+				<br>
+				<button v-bind:class="cTodo" v-on:click="clickTodo">待完成</button>
+				<button v-bind:class="cComplete" v-on:click="clickComplete">已完成</button>
 		</div>
 		<!-- <input id='keyword' type="text" name="keyword" v-model="searchKey" class="inputSearch" onfocus='this.value=""'>
 			<button class="btnSearch" @click="clickSearch">查询</button> -->
@@ -16,7 +19,7 @@
 				<label>{{msg}}</label>
 			</div>
 			<ul class="ulCss" >
-				<li v-for="task in tasks">
+				<li v-for="task in completed(tasks)">
 					<div class="liTaskListDivCss"  v-on:click='clickTask(task)'>
 						<!-- <img src="../assets/icons/tasks.png" style="height: 20px; vertical-align: middle; padding-bottom: 5px"> -->
 						<!-- <label class="lable-title-css">{{task.id}}</label> -->
@@ -61,7 +64,9 @@
 				username:'',
 				searchKey: '',
 				msg:"",
-				progress:0
+				progress:0,				
+				cTodo:'clicked',
+				cComplete:'unclicked',
 			}
 		},
 		mounted(){
@@ -215,7 +220,6 @@
 										ts[i].schedule = sche;
 									}				
 						    	}    
-
 						 		/*var markers = [];
 					            for(var i = 0; i<ts.length; i+=1){
 					            	console.log(ts[i].longitude,ts[i].altitude);
@@ -290,6 +294,27 @@
 			clickTask: function(task){
 				console.log(task.id);
 				this.$router.push({path:'/home/taskdetail',query:{task:task}});
+			},
+			clickTodo:function(){
+				if(this.cTodo == 'unclicked'){
+					this.cTodo = 'clicked';
+					this.cComplete = 'unclicked';
+				}
+			},
+			clickComplete:function(){
+				if(this.cComplete == 'unclicked'){
+					this.cComplete = 'clicked';
+					this.cTodo = 'unclicked';
+				}
+			},
+			completed:function(tasks){
+				return tasks.filter(function(task){
+					if(task.status == '正在执行' && this.cTodo == 'clicked')
+						return task;
+					
+					else if(task.status == '已完成' && this.cComplete == 'clicked')
+						return task;
+				}.bind(this))
 			}
 			/*clickSearch: function(){
 				
@@ -338,7 +363,7 @@
 		vertical-align:middle;
 	}
 	.top{
-		padding: 10px;
+		padding-top: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
 		font-size: 14px;
@@ -452,5 +477,19 @@
 		height: 27px;
 		font-size: 14px;
 		/* color: grey; */
+	}
+	.unclicked{
+		width: 100px;
+		height: 50px;
+		background-color: #4F5D73;
+		border:none;
+		color: grey;
+	}
+	.clicked{
+		width: 100px;
+		height: 50px;
+		background-color: #4F5D73;
+		border:none;
+		color: #FFFFFF;
 	}
 </style>
