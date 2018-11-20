@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class Request_task {
+	private String username;
 	private String taskName;
 	private String taskDesc;
 	private String taskAddr;
@@ -16,6 +17,8 @@ public class Request_task {
 	private String answersNum;
 	private JSONArray questions;
 	private int answersLength;
+	
+	
 	public String getTaskName() {
 		return taskName;
 	}
@@ -82,9 +85,19 @@ public class Request_task {
 	}
 	@Override
 	public String toString() {
-		return "Request_task [taskName=" + taskName + ", taskDesc=" + taskDesc + ", taskAddr=" + taskAddr
-				+ ", completeDate=" + completeDate + ", publishDate=" + publishDate + ", taskPrice=" + taskPrice
-				+ ", taskTime=" + taskTime + ", answersNum =" + answersNum +", questions=" + questions + "]";
+		return "Request_task [username=" + username + ", taskName=" + taskName + ", taskDesc=" + taskDesc
+				+ ", taskAddr=" + taskAddr + ", completeDate=" + completeDate + ", publishDate=" + publishDate
+				+ ", taskPrice=" + taskPrice + ", taskTime=" + taskTime + ", answersNum=" + answersNum + ", questions="
+				+ questions + ", answersLength=" + answersLength + "]";
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public void setTaskAddr(String taskAddr) {
+		this.taskAddr = taskAddr;
 	}
 	
 }

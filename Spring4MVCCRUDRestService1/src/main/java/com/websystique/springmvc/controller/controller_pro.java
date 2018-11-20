@@ -603,7 +603,7 @@ public class controller_pro {
 						result.setState(2);
 						result.setError("查找过程出错");
 						return new ResponseEntity<Result_cao>(result,HttpStatus.OK);
-					}
+					}					
 					result.setState(1);
 					//result.setMessage(task.getDescription(), task.getQuestion())
 				msg_cao msg=new msg_cao();
@@ -632,6 +632,7 @@ public class controller_pro {
 				           String resMsg = "";
 				        try {
 				        	long  startTime=System.currentTimeMillis();         
+				        	
 				            for(int i=0;i<file.length;i++)
 				            {
 				            	String path="";
@@ -645,13 +646,16 @@ public class controller_pro {
 				            long  endTime=System.currentTimeMillis();
 				            System.out.println("运行时间："+String.valueOf(endTime-startTime)+"ms");
 				            resMsg = "1";
-				            } 
-					       Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
+				            }
+				            
+				            	Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
 					       Answer answer=answer_inter.findAnswer_aid(answer_inter.listAnswer().size());
 					       answer.setPicpath(jsonpath.toString());
 					       answer_inter.updateAnswer(answer);
 					       sqlSession.commit();
 						   sqlSession.close();
+				            				      
+					       
 				        }catch (IllegalStateException e) {
 				          
 				        	e.printStackTrace();
@@ -666,49 +670,52 @@ public class controller_pro {
 						result_task_add result=new result_task_add();
 						System.out.println("进行答案上传阶段");
 			try {
-						SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance(); 
-				        SqlSession sqlSession = sqlSessionFactory.openSession();  
-				        
-				        List<question> ql=new ArrayList<question>();
-				        for(int i=0;i<res.getQuestion().size();i++)
-				        {
-				        	question q=new question();
-				        	q.setQid(res.getQuestion().get(i).getQid());
-				        	q.setDescription(res.getQuestion().get(i).getDescription());
-				        	q.setLabelid(res.getQuestion().get(i).getLabelid());
-				        	q.setLabeldescription(res.getQuestion().get(i).getLabeldescription());
-						    ql.add(q);
-				        }
-				      Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
-				      Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
-				      Task task=task_inter.findTask(res.getTid());
-				      if(task.getStatus().equals("已完成"))
-				      {
-				    	  result.setState(2);
-				    	  System.out.println("任务TID"+String.valueOf(res.getTid()));
-				      }
-				      else{
-				    	  int count=  answer_inter.listAnswer().size();
-					       Answer answer=new Answer();
-					       answer.setUsername(res.getUsername());
-					       answer.setLatitude(res.getLatitude());
-					       answer.setLongitude(res.getLongitude());
-					       answer.setLocation(res.getLocation());
-					       answer.setTime(new Timestamp(System.currentTimeMillis()));
-					       answer.setAnswer(ql);
-					       answer.setAid(count+1);
-					       aid=count;
-					       answer.setTid(res.getTid());
-					       System.out.println(answer);
-					       answer_inter.addAnswer(answer);
-					       task.setAnswercount(answer_inter.countAnswer(res.getTid()));
-					       task_inter.answerCount(task);
-					       sqlSession.commit();  
-					       sqlSession.close(); 
-					       result.setState(1);
-					       System.out.println("else running"+String.valueOf(res.getTid()));
-				      }
-				      return new ResponseEntity<result_task_add>(result,HttpStatus.OK);
+				
+					SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance(); 
+			        SqlSession sqlSession = sqlSessionFactory.openSession();  
+			        
+			        List<question> ql=new ArrayList<question>();
+			        for(int i=0;i<res.getQuestion().size();i++)
+			        {
+			        	question q=new question();
+			        	q.setQid(res.getQuestion().get(i).getQid());
+			        	q.setDescription(res.getQuestion().get(i).getDescription());
+			        	q.setLabelid(res.getQuestion().get(i).getLabelid());
+			        	q.setLabeldescription(res.getQuestion().get(i).getLabeldescription());
+					    ql.add(q);
+			        }
+			      Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
+			      Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
+			      Task task=task_inter.findTask(res.getTid());
+			      if(task.getStatus().equals("已完成"))
+			      {
+			    	  result.setState(2);
+			    	  System.out.println("任务TID"+String.valueOf(res.getTid()));
+			      }
+			      else{
+			    	  int count=  answer_inter.listAnswer().size();
+				       Answer answer=new Answer();
+				       answer.setUsername(res.getUsername());
+				       answer.setLatitude(res.getLatitude());
+				       answer.setLongitude(res.getLongitude());
+				       answer.setLocation(res.getLocation());
+				       answer.setTime(new Timestamp(System.currentTimeMillis()));
+				       answer.setAnswer(ql);
+				       answer.setAid(count+1);
+				       aid=count;
+				       answer.setTid(res.getTid());
+				       System.out.println(answer);
+				       answer_inter.addAnswer(answer);
+				       task.setAnswercount(answer_inter.countAnswer(res.getTid()));
+				       task_inter.answerCount(task);
+				       sqlSession.commit();  
+				       sqlSession.close(); 
+				       result.setState(1);
+				       System.out.println("else running"+String.valueOf(res.getTid()));
+			      }
+			      
+				
+						return new ResponseEntity<result_task_add>(result,HttpStatus.OK);
 						}catch(Exception e) {
 						result.setState(0);
 					result.setError("error");
@@ -1150,6 +1157,7 @@ public class controller_pro {
 				System.out.println(ret);
 				int c=worker_inter.listTask().size();
 				task.setId(++c);
+				task.setUsername(ret.getData().getUsername());
 				task.setDescription(ret.getData().getTaskDesc());
 				task.setStatus("正在执行");
 				task.setAnswercount(ret.getData().getAnswersLength());

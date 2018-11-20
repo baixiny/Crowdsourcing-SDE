@@ -11,6 +11,7 @@ public class message_task {
 	public void setId(int id) {
 		this.id = id;
 	}
+	private String username;
 	private String description;
 	private String location;
 	private String deadline;
@@ -101,10 +102,16 @@ public class message_task {
 	}
 	@Override
 	public String toString() {
-		return "message_task [id=" + id + ", description=" + description + ", location=" + location + ", deadline="
-				+ deadline + ", longitude=" + longitude + ", altitude=" + altitude + ", status=" + status
-				+ ", tasktype=" + tasktype + ", answercount=" + answercount + ", qusetion=" + qusetion + ", distance="
-				+ distance + ", schedule=" + schedule + ", answersnum="+ answersnum +"]";
+		return "message_task [id=" + id + ", username=" + username + ", description=" + description + ", location="
+				+ location + ", deadline=" + deadline + ", longitude=" + longitude + ", altitude=" + altitude
+				+ ", status=" + status + ", tasktype=" + tasktype + ", answercount=" + answercount + ", distance="
+				+ distance + ", schedule=" + schedule + ", answersnum=" + answersnum + ", qusetion=" + qusetion + "]";
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	

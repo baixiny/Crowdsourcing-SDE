@@ -57,6 +57,7 @@ public class Result_task_other {
 				message_task t=new message_task();
 			
 			t.setId(task.get(i).getId());
+			t.setUsername(task.get(i).getUsername());
 			t.setLocation(task.get(i).getLocation());
 			t.setDescription(task.get(i).getDescription());
 			double m=answer_inter.countAnswer(task.get(i).getId());

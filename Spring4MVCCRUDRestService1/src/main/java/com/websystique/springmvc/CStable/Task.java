@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
 
 public class Task {
 	private Integer tid;   
+	private String username;
     private String description; 
     private double longitude;
     private double latitude;
@@ -114,10 +115,27 @@ public class Task {
     public void setDeadline(Timestamp deadline) {  
         this.deadline = deadline;  
     }  
-    @Override  
-    public String toString() {  
-        return "{\"tid\":\"" + tid + "\", \"tasktype\":\"" + tasktype + "\", longitude\":\""  
-                + longitude + "\", latitude\":\"" +latitude + "\", \"location\":\"" +location+"\", \"description\":\"" +description+"\",\" publictime\":\"" +
-        		publictime+"\",\" deadline\":\"" +deadline+"\", \"answercount\":\"" +answercount+"\",\"answersnum\":\"" +answersnum+"\",\"status:\"" +status+"\",\" question\":\"" +question+"\"}";  
-    }  
+    @Override
+	public String toString() {
+		return "Task [tid=" + tid + ", username=" + username + ", description=" + description + ", longitude="
+				+ longitude + ", latitude=" + latitude + ", location=" + location + ", answercount=" + answercount
+				+ ", status=" + status + ", tasktype=" + tasktype + ", answersnum=" + answersnum + ", publictime="
+				+ publictime + ", deadline=" + deadline + ", question=" + question + "]";
+	}
+
+	public Integer getTid() {
+		return tid;
+	}
+
+	public void setTid(Integer tid) {
+		this.tid = tid;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}  
 }

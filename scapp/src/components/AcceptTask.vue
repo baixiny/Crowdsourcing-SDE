@@ -182,6 +182,7 @@ import lrz from "lrz"
         var latitude = localStorage.getItem('latitude');
 
         var self=this;
+        if(self.fileArray.length!=0){
          this.$ajax({
               method: 'POST',
               url: global.urlUploadAnswer,
@@ -249,8 +250,9 @@ import lrz from "lrz"
             self.taskInfo = '网络连接失败:(';
         })
   
-        
+        }
       },
+
  
     toggleAddPic: function() {
         let vm = this;

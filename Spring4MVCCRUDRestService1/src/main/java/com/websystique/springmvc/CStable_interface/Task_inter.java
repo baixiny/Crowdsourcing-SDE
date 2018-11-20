@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;  
 import org.apache.ibatis.annotations.Update; 
 public interface Task_inter {
-	@Insert("insert into task(tid,longitude,latitude,location,description,publictime,question,status,answercount,tasktype,deadline,answersnum) values(#{tid},#{longitude},#{latitude},#{location},#{description},#{publictime},#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler},#{status},#{answercount},#{tasktype},#{deadline},#{answersnum})")
+	@Insert("insert into task(tid,username,longitude,latitude,location,description,publictime,question,status,answercount,tasktype,deadline,answersnum) values(#{tid},#{username},#{longitude},#{latitude},#{location},#{description},#{publictime},#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler},#{status},#{answercount},#{tasktype},#{deadline},#{answersnum})")
 	public  Integer addTask(Task task);  
 	
 	@Update(" update task set tasktype=#{tasktype:VARCHAR} , longitude=#{longitude:DECIMAL},latitude=#{latitude:DECIMAL}, location=#{location:VARCHAR}, status=#{status:VARCHAR},answercount=#{answercount:INTEGER},description=#{description:VARCHAR},publictime=#{publictime:TIMESTAMP}, deadline=#{deadline:TIMESTAMP}, question=#{question,typeHandler=com.websystique.springmvc.handler.JsonTypeHandler}where tid=#{tid:INTEGER}") 
