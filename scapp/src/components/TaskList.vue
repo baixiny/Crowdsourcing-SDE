@@ -1,14 +1,18 @@
 <template>
 	<div style="background-color: #F5F5F5; overflow: auto">
 		<div class="top">
-			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: left"></label>
+			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: left; "></label>
 			任务列表
 			<img src="../assets/icons/search.png" class="searchBtn" v-on:click="" >
 		</div>
 		<!-- <input id='keyword' type="text" name="keyword" v-model="searchKey" class="inputSearch" onfocus='this.value=""'>
 			<button class="btnSearch" @click="clickSearch">查询</button> -->
 		<!-- 地图容器  class="amap-wrapper" -->
-		<div id="amap-div"></div>
+	<div class="topBtn">
+		<button v-bind:class="cTodo" v-on:click="clickTodo">待完成</button>
+		<button v-bind:class="cComplete" v-on:click="clickComplete">已完成</button>
+	</div>
+		<div id="amap-div" style="margin-top: 70px"></div>
 		<div>
 			<div class="divMsgTLCss">
 				<!-- <img src="../assets/icons/tips.png" class="iconCss"> -->
@@ -16,7 +20,7 @@
 				<label>{{msg}}</label>
 			</div>
 			<ul class="ulCss" >
-				<li v-for="task in tasks">
+				<li v-for="task in completed(tasks)">
 					<div class="liTaskListDivCss"  v-on:click='clickTask(task)'>
 						<!-- <img src="../assets/icons/tasks.png" style="height: 20px; vertical-align: middle; padding-bottom: 5px"> -->
 						<!-- <label class="lable-title-css">{{task.id}}</label> -->
@@ -61,7 +65,9 @@
 				username:'',
 				searchKey: '',
 				msg:"",
-				progress:0
+				progress:0,				
+				cTodo:'click',
+				cComplete:'unclick',
 			}
 		},
 		mounted(){
@@ -215,7 +221,6 @@
 										ts[i].schedule = sche;
 									}				
 						    	}    
-
 						 		/*var markers = [];
 					            for(var i = 0; i<ts.length; i+=1){
 					            	console.log(ts[i].longitude,ts[i].altitude);
@@ -290,6 +295,27 @@
 			clickTask: function(task){
 				console.log(task.id);
 				this.$router.push({path:'/home/taskdetail',query:{task:task}});
+			},
+			clickTodo:function(){
+				if(this.cTodo == 'unclick'){
+					this.cTodo = 'click';
+					this.cComplete = 'unclick';
+				}
+			},
+			clickComplete:function(){
+				if(this.cComplete == 'unclick'){
+					this.cComplete = 'click';
+					this.cTodo = 'unclick';
+				}
+			},
+			completed:function(tasks){
+				return tasks.filter(function(task){
+					if(task.status == '正在执行' && this.cTodo == 'click')
+						return task;
+					
+					else if(task.status == '已完成' && this.cComplete == 'click')
+						return task;
+				}.bind(this))
 			}
 			/*clickSearch: function(){
 				
@@ -338,10 +364,14 @@
 		vertical-align:middle;
 	}
 	.top{
-		padding: 10px;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		position: fixed;
 		background-color: #4F5D73;
 		color: #FFFFFF;
 		font-size: 14px;
+		text-align:center;
 	}
 	.searchBtn{
 	    width:25px; 
@@ -452,5 +482,27 @@
 		height: 27px;
 		font-size: 14px;
 		/* color: grey; */
+	}
+	.unclick{
+		width: 100px;
+		height: 30px;
+		background-color: #4F5D73;
+		border:none;
+		color: grey;
+	}
+	.click{
+		width: 100px;
+		height: 30px;
+		background-color: #4F5D73;
+		border:none;
+		color: #FFFFFF;
+	}
+	.topBtn{
+		top: 40px;
+		position: fixed;
+		width: 100%;
+		height: 30px;
+		font-size: 14px;
+		background-color: #4F5D73;
 	}
 </style>
