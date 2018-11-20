@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE configuration       
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"       
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+        
+ <configuration> 
+ 
+     <settings>  
+    <!--这个配置使全局的映射器启用 --> 
+        <setting name="cacheEnabled" value="true" /> 
+     </settings>  
+      <typeAliases>  
+        <!--给实体类起一个别名 ,方便使用对象的时候不用带上那么长的包路径-->  
+         <typeAlias alias="Worker" type="com.websystique.springmvc.CStable.Worker" />  
+         <typeAlias alias="Administrator" type="com.websystique.springmvc.CStable.Administrator" />  
+         <typeAlias alias="Answer" type="com.websystique.springmvc.CStable.Answer" /> 
+         <typeAlias alias="Newanswer" type="com.websystique.springmvc.CStable.Newanswer" />  
+         <typeAlias alias="Task" type="com.websystique.springmvc.CStable.Task" />  
+          <typeAlias alias="Newtask" type="com.websystique.springmvc.CStable.Newtask" />  
+         <typeAlias alias="Behavior_log" type="com.websystique.springmvc.CStable.Behavior_log" /> 
+         <typeAlias alias="Historylist" type="com.websystique.springmvc.CStable.Historylist" /> 
+         <typeAlias alias="Historylist_detail" type="com.websystique.springmvc.CStable.Historylist_detail" /> 
+          <typeAlias alias="Questionnaire" type="com.websystique.springmvc.CStable.Questionnaire" /> 
+          <typeAlias alias="Qnaireanswer" type="com.websystique.springmvc.CStable.Qnaireanswer" /> 
+     </typeAliases>  
+     <!--数据源配置 这块用 BD2数据库 -->  
+     <environments default="development">  
+        <environment id="development">  
+            <transactionManager type="jdbc" />  
+            <dataSource type="POOLED">  
+                <property name="driver" value="org.postgresql.Driver" />  
+                <property name="url"  
+                    value="jdbc:postgresql://211.87.239.31:5432/scdb?charSet=utf-8" />  
+                <property name="username" value="postgres" />  
+                <property name="password" value="552211xx" />  
+            </dataSource>  
+        </environment>  
+    </environments>  
+     <mappers>   
+	     	<mapper class="com.websystique.springmvc.CStable_interface.Answer_inter"/> 
+	       <mapper class="com.websystique.springmvc.CStable_interface.Task_inter"/>
+	       <mapper class="com.websystique.springmvc.CStable_interface.Worker_inter"/>
+	        <mapper class="com.websystique.springmvc.CStable_interface.Administrator_inter"/>
+	         <mapper class="com.websystique.springmvc.CStable_interface.Behavior_log_inter"/>
+	          <mapper class="com.websystique.springmvc.CStable_interface.Newanswer_inter"/> 
+	          <mapper class="com.websystique.springmvc.CStable_interface.Newtask_inter"/> 
+	          <mapper class="com.websystique.springmvc.CStable_interface.Historylist_inter"/>     
+	          <mapper class="com.websystique.springmvc.CStable_interface.Questionnaire_inter"/> 
+	          <mapper class="com.websystique.springmvc.CStable_interface.Qnaireanswer_inter"/> 
+     </mappers>   
+     
+ </configuration>      
