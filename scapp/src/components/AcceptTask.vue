@@ -182,6 +182,7 @@ import lrz from "lrz"
         var latitude = localStorage.getItem('latitude');
 
         var self=this;
+<<<<<<< HEAD
         var formdata = new FormData();
         /*formdata.append('file',self.fileArray);*/
 
@@ -195,6 +196,10 @@ import lrz from "lrz"
         console.log(self.fileArray);
         if(self.fileArray!=0){        
             this.$ajax({
+=======
+        if(self.fileArray.length!=0){
+         this.$ajax({
+>>>>>>> 528a6d522861a508cc4baff7b7807d3ada961e98
               method: 'POST',
               url: global.urlUploadAnswer,
               //规范url
@@ -250,13 +255,20 @@ import lrz from "lrz"
           .catch(function (response) {
             console.log(response);
             self.taskInfo = '网络连接失败:(';
+<<<<<<< HEAD
           })
         }
         else{
           alert("请拍照或选择需要上传的图片");
         }
         
+=======
+        })
+  
+        }
+>>>>>>> 528a6d522861a508cc4baff7b7807d3ada961e98
       },
+
  
     toggleAddPic: function() {
         let vm = this;
