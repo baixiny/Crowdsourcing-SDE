@@ -2,10 +2,10 @@
 <template>
   <div style="overflow: auto;">
   <div class="topAddTask">
-      <label>发布任务</label>
-    </div>
-  <div class="task-wrapper">
-    <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80">
+      <label style="background-color: #4F5D73">发布任务</label>
+  </div>
+  <div class="task-wrapper" style="margin-top: 50px">
+    <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80" style="margin-top: 50px">
       <FormItem label="任务名称" prop="taskName">
         <Input type="text" v-model="taskData.taskName" />
       </FormItem>
@@ -109,6 +109,7 @@ export default {
       dataComplete: [],
       tempValue: '',
       taskData: {
+        username: '',
         taskName: '',
         taskDesc: '',
         taskAddr: '',
@@ -158,6 +159,10 @@ export default {
       }
     }
   },
+   mounted(){
+      console.log('---------addttask mounted--------'); 
+      this.taskData.username=localStorage.getItem('username');
+    },
   methods: {
     showAddresses(value) {
       // 得到当前所在的城市
@@ -301,6 +306,10 @@ export default {
   }
   .topAddTask{
     /* display: flex; */
+    top: 0;
+    height: 40px;
+    width: 100%;
+    position: fixed;
     text-align:center;
     padding: 10px;
     background-color: #4F5D73;

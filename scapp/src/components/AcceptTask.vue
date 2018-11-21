@@ -182,7 +182,19 @@ import lrz from "lrz"
         var latitude = localStorage.getItem('latitude');
 
         var self=this;
-         this.$ajax({
+        var formdata = new FormData();
+        /*formdata.append('file',self.fileArray);*/
+
+              
+        formdata.append('username',self.username);
+        formdata.append('tid',self.task.id);
+ 
+        for(var i=0; i<self.fileArray.length; i++){
+              formdata.append('file',self.fileArray[i]);
+          }
+        console.log(self.fileArray);
+        if(self.fileArray!=0){        
+            this.$ajax({
               method: 'POST',
               url: global.urlUploadAnswer,
               //规范url
@@ -195,25 +207,15 @@ import lrz from "lrz"
                   latitude: latitude
               }
           })
-        .then(function (response) {
+          .then(function (response) {
             console.log(response.data.state);
             if(response.data.state == 1){
               
               console.log(response.data.state);
               /*alert("上传成功");*/  
               /*self.$router.push({path:'/home',query:{page:1}});*/ 
-              event.preventDefault();//取消默认行为
-              var tid=self.task.id;     
-              var formdata = new FormData();
-              /*formdata.append('file',self.fileArray);*/
-              for(var i=0; i<self.fileArray.length; i++){
-                  formdata.append('file',self.fileArray[i]);
-              }
-              console.log(self.fileArray);
-              
-              formdata.append('username',self.username);
-              formdata.append('tid',self.task.id);
- 
+            event.preventDefault();//取消默认行为  
+
               let config = {
                   headers: {
                   'Content-Type': 'multipart/form-data'  //之前说的以表单传数据的格式来传递fromdata
@@ -239,16 +241,20 @@ import lrz from "lrz"
               })
                
               
-          }else if(response.data.state == 2){
+            }
+            else if(response.data.state == 2){
              alert("任务超时，上传失败");  
-          }           
+            }           
               
-        })
-        .catch(function (response) {
+          }.bind(this))
+          .catch(function (response) {
             console.log(response);
             self.taskInfo = '网络连接失败:(';
-        })
-  
+          })
+        }
+        else{
+          alert("请拍照或选择需要上传的图片");
+        }
         
       },
  

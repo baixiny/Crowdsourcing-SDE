@@ -44,6 +44,7 @@ const routes = [
 	{path:'/home/taskdetail',component: TaskDetail},
 	{path:'/home/accepttask',component: AcceptTask},
 	{path:'/home/setter',component: Setter},
+	{path:'/home/history',component: History},
 	{path:'/questionnaire',component: Questionnaire},
 	{path:'/preQuestionnaire',component: PreQuestionnaire},
 	{path:'/home/questionnaireWithTask',component: QuestionnaireWithTask},

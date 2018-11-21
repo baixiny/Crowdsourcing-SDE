@@ -1,6 +1,6 @@
 <template>
 	<div style="background-color: #F5F5F5; overflow: auto">
-		<div class="top">
+		<div class="topTitle">
 			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: left; "></label>
 			任务列表
 			<img src="../assets/icons/search.png" class="searchBtn" v-on:click="" >
@@ -8,10 +8,12 @@
 		<!-- <input id='keyword' type="text" name="keyword" v-model="searchKey" class="inputSearch" onfocus='this.value=""'>
 			<button class="btnSearch" @click="clickSearch">查询</button> -->
 		<!-- 地图容器  class="amap-wrapper" -->
-	<div class="topBtn">
-		<button v-bind:class="cTodo" v-on:click="clickTodo">待完成</button>
-		<button v-bind:class="cComplete" v-on:click="clickComplete">已完成</button>
-	</div>
+		<div class="topBtn">
+			<button v-bind:class="cTodo" v-on:click="clickTodo">待完成</button>
+			<button v-bind:class="cComplete" v-on:click="clickComplete">已完成</button>
+			<button v-bind:class="cMyask" v-on:click="clickMyask">我的提问</button>
+			<button v-bind:class="cMyanswer" v-on:click="clickMyanswer">我的回答</button>
+		</div>
 		<div id="amap-div" style="margin-top: 70px"></div>
 		<div>
 			<div class="divMsgTLCss">
@@ -68,6 +70,8 @@
 				progress:0,				
 				cTodo:'click',
 				cComplete:'unclick',
+				cMyask:'unclick',
+				cMyanswer:'unclick',
 			}
 		},
 		mounted(){
@@ -190,8 +194,8 @@
 		            console.log(result);
 		            self.msg  = '定位失败:(';
 
-		            localStorage.setItem('longitude',117.144529);
-		            localStorage.setItem('latitude',36.672898);
+		            localStorage.setItem('longitude',117.138354);
+		            localStorage.setItem('latitude',36.666587);
 
 		            self.$ajax({
 				      	method: 'PUT',
@@ -296,24 +300,38 @@
 				console.log(task.id);
 				this.$router.push({path:'/home/taskdetail',query:{task:task}});
 			},
+			clickMyanswer: function(){
+				this.$router.push('/home/history');
+			},
 			clickTodo:function(){
 				if(this.cTodo == 'unclick'){
 					this.cTodo = 'click';
 					this.cComplete = 'unclick';
+					this.cMyask = 'unclick'
 				}
 			},
 			clickComplete:function(){
 				if(this.cComplete == 'unclick'){
 					this.cComplete = 'click';
 					this.cTodo = 'unclick';
+					this.cMyask = 'unclick'
 				}
+			},
+			clickMyask:function(){
+				if(this.cMyask == 'unclick'){
+					this.cMyask = 'click';
+					this.cTodo = 'unclick';
+					this.cComplete = 'unclick';
+				}
+
 			},
 			completed:function(tasks){
 				return tasks.filter(function(task){
 					if(task.status == '正在执行' && this.cTodo == 'click')
 						return task;
-					
 					else if(task.status == '已完成' && this.cComplete == 'click')
+						return task;
+					else if(task.username == this.username && this.cMyask == 'click')
 						return task;
 				}.bind(this))
 			}
@@ -363,10 +381,11 @@
 		height: 30px;
 		vertical-align:middle;
 	}
-	.top{
+	.topTitle{
 		top: 0;
 		height: 40px;
 		width: 100%;
+		padding-top: 10px;
 		position: fixed;
 		background-color: #4F5D73;
 		color: #FFFFFF;
@@ -484,18 +503,20 @@
 		/* color: grey; */
 	}
 	.unclick{
-		width: 100px;
+		width: 80px;
 		height: 30px;
 		background-color: #4F5D73;
 		border:none;
 		color: grey;
+		text-align:center;
 	}
 	.click{
-		width: 100px;
+		width: 80px;
 		height: 30px;
 		background-color: #4F5D73;
 		border:none;
 		color: #FFFFFF;
+		text-align:center;
 	}
 	.topBtn{
 		top: 40px;
