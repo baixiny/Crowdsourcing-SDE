@@ -15,7 +15,7 @@
                   <h2>任务详情</h2>
                   <p>任务编号：{{task.id}}</p>
                   <p class="option">任务详情：{{task.description}}</p>
-                  <p class="option">请回答以下问题并拍摄能够显示折扣信息的照片</p>
+                  <p class="option">请回答以下问题并上传能够反映问题答案的照片</p>
                   </div>
               </div>
     <div class="title">  <h3>问题</h3>
