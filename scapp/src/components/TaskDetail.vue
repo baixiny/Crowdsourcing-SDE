@@ -44,7 +44,7 @@
  		<img v-if='hasAsk' src="../assets/icons/tips.png" class="iconTDetailCss">
  		<label class="divDetailContentCss">{{hasAskMsg}}</label>
  	</div>
- 	<button class="btnDetailBottom" v-on:click="clickAccept">接受</button>
+ 	<button class="btnDetailBottom" v-on:click="clickAccept">{{msg}}</button>
  	
 </div>
 </template>
@@ -56,7 +56,7 @@ export default {
   	data () {
     	return {
     		task:'',
-      		msg: 'Welcome to Your Vue.js App',
+      		msg: '',
       		taskInfo:'',
       		quesArray:[],
       		hasAsk:false,
@@ -69,11 +69,12 @@ export default {
 		self.username = localStorage.getItem('username');
 		self.task = self.$route.query.task;
 		console.log(self.task.id);
+		console.log(self.task.status);
 		/*self.taskInfo=response.data.message;
         self.quesArray=response.data.message.question; 
         console.log(response.data.message.question);  */
 
-		/*var self = this;
+		var self = this;
         this.$ajax({
             method: 'PUT',
             url: global.urlGetTaskDetail,
@@ -83,19 +84,26 @@ export default {
         })
 	    .then(function (response) {
 	        console.log(response.data.state);
-	        if(response.data.state == 1){
+	        console.log(response.data);
+	        if (self.task.status == '已完成') {
+	        	self.msg = '已完成';
+	        }
+	        else if(response.data.state == 1){
+	        	self.msg = '可接受';
 	            self.taskInfo=response.data.message;
 	            self.quesArray=response.data.message.question; 
 	            console.log(response.data.message.question);        
 	              
 	        }else if(response.data.state == 2){
 	            self.taskInfo = '该任务无详情';
+	        }else if(response.data.state == 0){
+	        	self.msg = '已回答';
 	        }           
 	    })
 	    .catch(function (response) {
 	            console.log(response);
 	            self.taskInfo = '网络连接失败:(';
-	    });*/
+	    });
 		
 		console.log("mounted"+this.username);
 		var mapObj = new AMap.Map('amap-div',{
@@ -171,8 +179,10 @@ export default {
 	  		/*self.$router.push({path:'/preQuestionnaire',query:{ask:response.data.message[0]}});*/
 	  		if(this.hasAsk == true){
 	  			this.$router.push({path:'/home/questionnaireWithTask',query:{task:this.task, ask: this.ask}});
-	  		}else{
+	  		}else if(this.msg == '可接受'){
 	  			this.$router.push({path:'/home/accepttask',query:{task:this.task}});
+	  		}else{
+	  			this.$router.push({path:'/home',query:{page:1}});
 	  		}
 		},
 		clickBack: function(){

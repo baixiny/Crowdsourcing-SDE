@@ -4,8 +4,8 @@
   <div class="topAddTask">
       <label style="background-color: #4F5D73">发布任务</label>
   </div>
-  <div class="task-wrapper" style="margin-top: 50px">
-    <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80" style="margin-top: 50px">
+  <div class="task-wrapper">
+    <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80">
       <FormItem label="任务名称" prop="taskName">
         <Input type="text" v-model="taskData.taskName" />
       </FormItem>
@@ -309,7 +309,6 @@ export default {
     top: 0;
     height: 40px;
     width: 100%;
-    position: fixed;
     text-align:center;
     padding: 10px;
     background-color: #4F5D73;

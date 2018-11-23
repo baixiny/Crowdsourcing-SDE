@@ -83,10 +83,11 @@
 
 <style type="text/css">
 	.top{
+		text-align:center;
 		padding: 10px;
 		background-color: #4F5D73;
-		font-size: 14px;
 		color: #FFFFFF;
+		font-size: 14px;
 	}
 	.content{
 		position:relative;
