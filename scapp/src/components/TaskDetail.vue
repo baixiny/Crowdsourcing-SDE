@@ -4,7 +4,8 @@
 		<img src="../assets/icons/back.png" class="back" v-on:click="clickBack" >
 		<label>任务详情</label>
 		<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
-	</div> 
+	</div>
+	<div style="padding-top: 45px"></div>  
 	<div>
 		<div class="divDetailCCss" style="margin-top:10px; padding-bottom:10px; border-bottom-width: 8px;">
 			<label class="labTTtlDetailcss">{{task.description}}</label><br>
@@ -79,7 +80,8 @@ export default {
             method: 'PUT',
             url: global.urlGetTaskDetail,
             data: {
-                tid: self.task.id
+                tid: self.task.id,
+                tname: self.username
              }
         })
 	    .then(function (response) {
@@ -199,7 +201,12 @@ export default {
 		padding: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
-		font-size: 14px;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		font-size: 16px;
+		position: fixed;
+		z-index: 100;
 	}
 	.back{
 		width:25px; 

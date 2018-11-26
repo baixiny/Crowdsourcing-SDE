@@ -7,6 +7,7 @@
       <label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
     </div>
     <!-- <div class="top">接受任务</div> -->
+    <div style="padding-top: 45px"></div>
     <div class="box">
                 <div class="imgWrap">
                  <img width="57" height="65" src="../assets/icons/任务.png" >
@@ -177,10 +178,12 @@ import lrz from "lrz"
  
          }
         console.log(question);
-        var location = localStorage.getItem('location');
-        var longitude = localStorage.getItem('longitude');
-        var latitude = localStorage.getItem('latitude');
-
+        var location = sessionStorage.getItem('location');
+        var longitude = sessionStorage.getItem('longitude');
+        var latitude = sessionStorage.getItem('latitude');
+        console.log(location);
+        console.log(longitude);
+        console.log(latitude);
         var self=this;
         var formdata = new FormData();
         /*formdata.append('file',self.fileArray);*/

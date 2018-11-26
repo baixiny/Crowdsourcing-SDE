@@ -4,7 +4,8 @@
 			<img src="../assets/icons/back.png" class="back" v-on:click="clickBack" >
 			<label>我的回答</label>
 			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
-		</div> 
+		</div>
+		<div style="padding-top: 45px"></div> 
 		<div class="content">
 			<div v-if="seen" class="note">
 			   没有历史任务
@@ -87,7 +88,12 @@
 		padding: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
-		font-size: 14px;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		font-size: 16px;
+		position: fixed;
+		z-index: 100;
 	}
 	.content{
 		position:relative;
@@ -147,6 +153,8 @@
     }
     .cont_ul{
     	list-style: none;
+    	overflow-y: auto;
+		overflow: auto;
     }
     .back{
 		width:25px; 

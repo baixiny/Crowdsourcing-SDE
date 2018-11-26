@@ -4,6 +4,7 @@
   <div class="topAddTask">
       <label style="background-color: #4F5D73">发布任务</label>
   </div>
+  <div style="padding-top: 45px"></div> 
   <div class="task-wrapper">
     <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80">
       <FormItem label="任务名称" prop="taskName">
@@ -313,6 +314,8 @@ export default {
     padding: 10px;
     background-color: #4F5D73;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 16px;
+    position: fixed;
+    z-index: 100;
   }
 </style>
