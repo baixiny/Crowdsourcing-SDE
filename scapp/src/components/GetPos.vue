@@ -1,10 +1,11 @@
 <template>
-  <div>	
+  <div style="overflow: auto;">	
   	<div class="top">
       <img src="../assets/icons/back.png" class="back" v-on:click="clickBack" >
       <label>更改位置</label>
       <label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
     </div>
+    <div style="padding-top: 45px"></div> 
     <div>
     	<AutoComplete
     	v-model="address"
@@ -54,7 +55,8 @@ export default {
     clickAddress:function(){
     	var addr = new Array();
     	addr = this.address.split(",");
-    	//localStorage.setItem('auto',0);
+    	sessionStorage['auto'] = 0;
+    	console.log(sessionStorage.getItem('auto'));
     	sessionStorage.setItem('longitude',addr[1]);
     	sessionStorage.setItem('latitude',addr[2]);
     	this.$router.push({path:'/home',query:{page:1}});
@@ -66,8 +68,13 @@ export default {
 	.top{
 		padding: 10px;
 		background-color: #4F5D73;
-		font-size: 14px;
+		font-size: 16px;
 		color: #FFFFFF;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		position: fixed;
+		z-index: 100;
 	}
 	.back{
 		width:25px; 
