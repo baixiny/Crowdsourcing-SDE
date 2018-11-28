@@ -36,7 +36,8 @@
 			return {
 				username:'',
 				seen:'',
-				items: []
+				items: [],
+				//tid:20
 			}
 		} ,
         
@@ -48,8 +49,10 @@
 			this.$ajax({
 			      	method: 'PUT',
 			      	url: global.urlGetHistory,
+			      	//url: global.urlChooseAnswer,
 			      	data: {
 				        username: self.username
+				        //tid:self.tid
 			      	}
 			   	})
 				.then(function (response) {

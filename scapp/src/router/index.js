@@ -41,12 +41,10 @@ const routes = [
 			path:'/home/personalinfo',
 			component: PersonalInfo
 		},
-		{
-			path:'/home/history',
-			component: History
-		},
+		
 		]
 	},
+	{path:'/home/history',component: History},
 	{path:'/home/taskdetail',component: TaskDetail},
 	{path:'/home/accepttask',component: AcceptTask},
 	{path:'/home/setter',component: Setter},

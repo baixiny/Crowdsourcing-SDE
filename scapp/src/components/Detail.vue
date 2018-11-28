@@ -100,7 +100,7 @@
 
 		methods:{
 				clickBack: function(){
-					this.$router.push({path:'/home/history',query:{page:2}});
+					this.$router.push({path:'/home/history'});
 				}		
 			  }
     }
@@ -114,6 +114,9 @@
 		background-color: #4F5D73;
 		color: #FFFFFF;
 		font-size: 16px;
+		top: 0;
+		height: 40px;
+		width: 100%;
 		position: fixed;
 		z-index: 100;
 	}
