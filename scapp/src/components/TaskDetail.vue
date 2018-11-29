@@ -69,11 +69,11 @@ export default {
 		self.username = localStorage.getItem('username');
 		self.task = self.$route.query.task;
 		console.log(self.task.id);
-		/*self.taskInfo=response.data.message;
+		self.taskInfo=response.data.message;
         self.quesArray=response.data.message.question; 
-        console.log(response.data.message.question);  */
+        console.log(response.data.message.question);  
 
-		/*var self = this;
+		var self = this;
         this.$ajax({
             method: 'PUT',
             url: global.urlGetTaskDetail,
@@ -90,12 +90,13 @@ export default {
 	              
 	        }else if(response.data.state == 2){
 	            self.taskInfo = '该任务无详情';
-	        }           
+	        }else   if(response.data.state == 0){
+	            self.taskInfo = '已回答过此问题';}        
 	    })
 	    .catch(function (response) {
 	            console.log(response);
 	            self.taskInfo = '网络连接失败:(';
-	    });*/
+	    });
 		
 		console.log("mounted"+this.username);
 		var mapObj = new AMap.Map('amap-div',{
