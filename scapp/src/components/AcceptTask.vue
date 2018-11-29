@@ -7,6 +7,7 @@
       <label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
     </div>
     <!-- <div class="top">接受任务</div> -->
+    <div style="padding-top: 45px"></div>
     <div class="box">
                 <div class="imgWrap">
                  <img width="57" height="65" src="../assets/icons/任务.png" >
@@ -15,7 +16,7 @@
                   <h2>任务详情</h2>
                   <p>任务编号：{{task.id}}</p>
                   <p class="option">任务详情：{{task.description}}</p>
-                  <p class="option">请回答以下问题并拍摄能够显示折扣信息的照片</p>
+                  <p class="option">请回答以下问题并上传能够反映问题答案的照片</p>
                   </div>
               </div>
     <div class="title">  <h3>问题</h3>
@@ -177,13 +178,26 @@ import lrz from "lrz"
  
          }
         console.log(question);
-        var location = localStorage.getItem('location');
-        var longitude = localStorage.getItem('longitude');
-        var latitude = localStorage.getItem('latitude');
-
+        var location = sessionStorage.getItem('location');
+        var longitude = sessionStorage.getItem('longitude');
+        var latitude = sessionStorage.getItem('latitude');
+        console.log(location);
+        console.log(longitude);
+        console.log(latitude);
         var self=this;
-        if(self.fileArray.length!=0){
-         this.$ajax({
+        var formdata = new FormData();
+        /*formdata.append('file',self.fileArray);*/
+
+              
+        formdata.append('username',self.username);
+        formdata.append('tid',self.task.id);
+ 
+        for(var i=0; i<self.fileArray.length; i++){
+              formdata.append('file',self.fileArray[i]);
+          }
+        console.log(self.fileArray);
+        if(self.fileArray!=0){        
+            this.$ajax({
               method: 'POST',
               url: global.urlUploadAnswer,
               //规范url
@@ -196,25 +210,15 @@ import lrz from "lrz"
                   latitude: latitude
               }
           })
-        .then(function (response) {
+          .then(function (response) {
             console.log(response.data.state);
             if(response.data.state == 1){
               
               console.log(response.data.state);
               /*alert("上传成功");*/  
               /*self.$router.push({path:'/home',query:{page:1}});*/ 
-              event.preventDefault();//取消默认行为
-              var tid=self.task.id;     
-              var formdata = new FormData();
-              /*formdata.append('file',self.fileArray);*/
-              for(var i=0; i<self.fileArray.length; i++){
-                  formdata.append('file',self.fileArray[i]);
-              }
-              console.log(self.fileArray);
-              
-              formdata.append('username',self.username);
-              formdata.append('tid',self.task.id);
- 
+            event.preventDefault();//取消默认行为  
+
               let config = {
                   headers: {
                   'Content-Type': 'multipart/form-data'  //之前说的以表单传数据的格式来传递fromdata
@@ -240,19 +244,22 @@ import lrz from "lrz"
               })
                
               
-          }else if(response.data.state == 2){
+            }
+            else if(response.data.state == 2){
              alert("任务超时，上传失败");  
-          }           
+            }           
               
-        })
-        .catch(function (response) {
+          }.bind(this))
+          .catch(function (response) {
             console.log(response);
             self.taskInfo = '网络连接失败:(';
-        })
-  
+          })
         }
+        else{
+          alert("请拍照或选择需要上传的图片");
+        }
+        
       },
-
  
     toggleAddPic: function() {
         let vm = this;

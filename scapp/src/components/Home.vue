@@ -3,7 +3,8 @@
 	<router-view class="container"></router-view>
 	<div class="bottom">
 		<button v-bind:class="cTask" v-on:click="clickTask">查看任务</button>
-		<button v-bind:class="cHistory" v-on:click="clickAddTask">发布任务</button>
+		<button v-bind:class="cAddTask" v-on:click="clickAddTask">发布任务</button>
+		<!--<button v-bind:class="cHistory" v-on:click="clickHistory">我的回答</button>-->
 		<button v-bind:class="cPerInfo" v-on:click="clickPerInfo">个人信息</button>
 	</div>
 </div>
@@ -16,8 +17,9 @@
 				//从登陆页面获取用户名
 				username:'',
 				cTask: 'clicked',
-				cHistory: 'unclicked',
+				//cHistory: 'unclicked',
 				cPerInfo: 'unclicked',
+				cAddTask: 'unclicked',
 				page: '',
 
 			}
@@ -29,17 +31,27 @@
 			console.log(this.username);
 			if(this.page == '1'){
 				this.cTask = 'clicked';
-				this.cHistory = 'unclicked';
-				this.cPerInfo = 'unclicked'
+				//this.cHistory = 'unclicked';
+				this.cPerInfo = 'unclicked';
+				this.cAddTask = 'unclicked';
 			}else if(this.page == '2'){
-				this.cHistory = 'clicked';
+				this.cAddTask = 'clicked';
+				//this.cHistory = 'unclicked';
 				this.cTask = 'unclicked';
-				this.cPerInfo = 'unclicked'
+				this.cPerInfo = 'unclicked';
+				
 			}else if(this.page == '3'){
 				this.cPerInfo = 'clicked';
 				this.cTask = 'unclicked';
-				this.cHistory = 'unclicked';
-			}
+				//this.cHistory = 'unclicked';
+				this.cAddTask = 'unclicked';
+			}/*
+			else if(this.page == '4'){
+				this.cHistory = 'clicked';
+				this.cAddTask = 'unclicked';			
+				this.cTask = 'unclicked';
+				this.cPerInfo = 'unclicked';
+			}*/
 		},
 		methods:{
 			clickTask: function(){
@@ -48,18 +60,20 @@
 				console.log(this.$route.path);
 				if(this.cTask == 'unclicked'){					
 					this.cTask = 'clicked';
-					this.cHistory = 'unclicked';
-					this.cPerInfo = 'unclicked'
+					this.cAddTask = 'unclicked';
+					this.cPerInfo = 'unclicked';
+					//this.cHistory = 'unclicked';
 				}
 			},
 			clickAddTask: function(){
 				//this.$router.push('/home/history');
 				this.$router.push('/home/addTask');
 				console.log(this.$route.path)
-				if(this.cHistory == 'unclicked'){
-					this.cHistory = 'clicked';
+				if(this.cAddTask == 'unclicked'){
+					this.cAddTask = 'clicked';
 					this.cTask = 'unclicked';
-					this.cPerInfo = 'unclicked'
+					this.cPerInfo = 'unclicked';
+					//this.cHistory = 'unclicked';
 				}
 			},
 			clickPerInfo: function(){
@@ -68,9 +82,21 @@
 				if(this.cPerInfo == 'unclicked'){
 					this.cPerInfo = 'clicked';
 					this.cTask = 'unclicked';
-					this.cHistory = 'unclicked';
+					this.cAddTask = 'unclicked';
+					//this.cHistory = 'unclicked';
 				}
 			},
+			/*clickHistory: function(){
+				this.$router.push('/home/history');
+				console.log(this.$route.path);
+				if(this.cHistory == 'unclicked'){					
+					this.cHistory = 'clicked';
+					this.cAddTask = 'unclicked';
+					this.cPerInfo = 'unclicked';
+					this.cTask = 'unclicked';
+				}
+
+			}*/
 			
 		}
 	}

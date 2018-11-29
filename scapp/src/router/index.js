@@ -14,6 +14,7 @@ import Questionnaire from '@/components/Questionnaire'
 import PreQuestionnaire from '@/components/PreQuestionnaire'
 import QuestionnaireWithTask from '@/components/QuestionnaireWithTask'
 import AddTask from '@/components/AddTask'
+import GetPos from '@/components/GetPos'
 
 
 Vue.use(Router)
@@ -39,11 +40,15 @@ const routes = [
 		{
 			path:'/home/personalinfo',
 			component: PersonalInfo
-		}]
+		},
+		
+		]
 	},
+	{path:'/home/history',component: History},
 	{path:'/home/taskdetail',component: TaskDetail},
 	{path:'/home/accepttask',component: AcceptTask},
 	{path:'/home/setter',component: Setter},
+	{path:'/home/getpos',component: GetPos},
 	{path:'/questionnaire',component: Questionnaire},
 	{path:'/preQuestionnaire',component: PreQuestionnaire},
 	{path:'/home/questionnaireWithTask',component: QuestionnaireWithTask},

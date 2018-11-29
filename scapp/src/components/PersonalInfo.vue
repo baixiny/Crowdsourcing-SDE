@@ -1,5 +1,5 @@
 <template>
-	<div style="font-size: 14px; background-color: #F5F5F5">
+	<div style="font-size: 14px; background-color: #F5F5F5;overflow: auto">
 		<!-- <div class="top">			
 			<label class="lbl_top">我</label>
 		</div> -->
@@ -13,53 +13,56 @@
 		<!-- <div style="height:3px; width:100%; background-color: #4F5D73; margin-top:15px;"></div>
 		 -->
 		<br>
-		<div class="infoContainCss">
-			<div class="infoPerItemCss">
+		<div class="infoContainCss" >
+			<div class="infoPerItemCss" @click="clickSetBtn" >
 				<img src="../assets/icons/sex.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">性别</label>	
 				<label class="lbItemValueCss">{{perInfo.sex}}</label>
 			</div>
 
-			<div class="infoPerItemCss">
+			<div class="infoPerItemCss" @click="clickSetBtn">
 				<img src="../assets/icons/date.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">年龄</label>	
 				<label class="lbItemValueCss">{{perInfo.age}}</label>			
 			</div>
 
-			<div class="infoPerItemCss">
+			<div class="infoPerItemCss" @click="clickSetBtn">
 				<img src="../assets/icons/address.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">地址</label>
 				<label class="lbItemValueCss">{{perInfo.area}}</label>	
 			</div>
 
-			<div class="infoPerItemCss">
+			<div class="infoPerItemCss" @click="clickSetBtn">
 				<img src="../assets/icons/mail.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">联系方式</label>	
 				<label class="lbItemValueCss">{{perInfo.phoneno}}</label>			
 			</div>
 
-			<div class="infoPerItemCss">
+			<div class="infoPerItemCss" @click="clickSetBtn">
 				<img src="../assets/icons/hobits.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">技能特长</label>
 				<label class="lbItemValueCss">{{perInfo.skill}}</label>	
 			</div>
 
 			<br>
-				
-			<div class="infoPerItemCss">
+			<!--	
+			<div class="infoPerItemCss" @click="clickHistory">
 				<img src="../assets/icons/任务.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">历史记录</label>		
 			</div>
+			-->
 			<div class="infoPerItemCss">
 				<img src="../assets/icons/reward.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">奖励金</label>		
-				<label class="lbItemValueCss">{{perInfo.mail}}</label>		
+				<label class="lbItemValueCss">{{perInfo.reward}}</label>		
 			</div>
 			<br>
+			<!--
 			<div class="infoPerItemCss" @click="clickSetBtn">
 				<img src="../assets/icons/setPerInfo.png" class="iconPerInfoCss">
 				<label class="lblPerInfpCss">设置</label>
 			</div>
+			-->
 		</div>
 	</div>
 </template>
@@ -103,7 +106,11 @@
 		methods: {
 			clickSetBtn: function(){
 				this.$router.push({path:'/home/setter',query:{perInfo:this.perInfo,page:'3'}});
-			}
+			},
+			/*
+			clickHistory: function(){
+				this.$router.push({path:'/home/history',query:{perInfo:this.perInfo,page:'3'}});
+			}*/
 		}
 	}
 </script>

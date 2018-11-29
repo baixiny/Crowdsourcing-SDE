@@ -2,8 +2,9 @@
 <template>
   <div style="overflow: auto;">
   <div class="topAddTask">
-      <label>发布任务</label>
-    </div>
+      <label style="background-color: #4F5D73">发布任务</label>
+  </div>
+  <div style="padding-top: 45px"></div> 
   <div class="task-wrapper">
     <Form ref="task" :model="taskData" :rules="ruleValidate" :label-width="80">
       <FormItem label="任务名称" prop="taskName">
@@ -109,6 +110,7 @@ export default {
       dataComplete: [],
       tempValue: '',
       taskData: {
+        username: '',
         taskName: '',
         taskDesc: '',
         taskAddr: '',
@@ -158,6 +160,10 @@ export default {
       }
     }
   },
+   mounted(){
+      console.log('---------addttask mounted--------'); 
+      this.taskData.username=localStorage.getItem('username');
+    },
   methods: {
     showAddresses(value) {
       // 得到当前所在的城市
@@ -301,10 +307,15 @@ export default {
   }
   .topAddTask{
     /* display: flex; */
+    top: 0;
+    height: 40px;
+    width: 100%;
     text-align:center;
     padding: 10px;
     background-color: #4F5D73;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 16px;
+    position: fixed;
+    z-index: 100;
   }
 </style>

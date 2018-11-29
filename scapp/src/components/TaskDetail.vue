@@ -4,7 +4,8 @@
 		<img src="../assets/icons/back.png" class="back" v-on:click="clickBack" >
 		<label>任务详情</label>
 		<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
-	</div> 
+	</div>
+	<div style="padding-top: 45px"></div>  
 	<div>
 		<div class="divDetailCCss" style="margin-top:10px; padding-bottom:10px; border-bottom-width: 8px;">
 			<label class="labTTtlDetailcss">{{task.description}}</label><br>
@@ -44,7 +45,7 @@
  		<img v-if='hasAsk' src="../assets/icons/tips.png" class="iconTDetailCss">
  		<label class="divDetailContentCss">{{hasAskMsg}}</label>
  	</div>
- 	<button class="btnDetailBottom" v-on:click="clickAccept">接受</button>
+ 	<button class="btnDetailBottom" v-on:click="clickAccept">{{msg}}</button>
  	
 </div>
 </template>
@@ -56,7 +57,7 @@ export default {
   	data () {
     	return {
     		task:'',
-      		msg: 'Welcome to Your Vue.js App',
+      		msg: '',
       		taskInfo:'',
       		quesArray:[],
       		hasAsk:false,
@@ -69,7 +70,12 @@ export default {
 		self.username = localStorage.getItem('username');
 		self.task = self.$route.query.task;
 		console.log(self.task.id);
+<<<<<<< HEAD
 		self.taskInfo=response.data.message;
+=======
+		console.log(self.task.status);
+		/*self.taskInfo=response.data.message;
+>>>>>>> 85e31d3a2f33f92e3bc8f40a7077c01dee7510a0
         self.quesArray=response.data.message.question; 
         console.log(response.data.message.question);  
 
@@ -78,20 +84,32 @@ export default {
             method: 'PUT',
             url: global.urlGetTaskDetail,
             data: {
-                tid: self.task.id
+                tid: self.task.id,
+                tname: self.username
              }
         })
 	    .then(function (response) {
 	        console.log(response.data.state);
-	        if(response.data.state == 1){
+	        console.log(response.data);
+	        if (self.task.status == '已完成') {
+	        	self.msg = '已完成';
+	        }
+	        else if(response.data.state == 1){
+	        	self.msg = '可接受';
 	            self.taskInfo=response.data.message;
 	            self.quesArray=response.data.message.question; 
 	            console.log(response.data.message.question);        
 	              
 	        }else if(response.data.state == 2){
 	            self.taskInfo = '该任务无详情';
+<<<<<<< HEAD
 	        }else   if(response.data.state == 0){
 	            self.taskInfo = '已回答过此问题';}        
+=======
+	        }else if(response.data.state == 0){
+	        	self.msg = '已回答';
+	        }           
+>>>>>>> 85e31d3a2f33f92e3bc8f40a7077c01dee7510a0
 	    })
 	    .catch(function (response) {
 	            console.log(response);
@@ -172,8 +190,10 @@ export default {
 	  		/*self.$router.push({path:'/preQuestionnaire',query:{ask:response.data.message[0]}});*/
 	  		if(this.hasAsk == true){
 	  			this.$router.push({path:'/home/questionnaireWithTask',query:{task:this.task, ask: this.ask}});
-	  		}else{
+	  		}else if(this.msg == '可接受'){
 	  			this.$router.push({path:'/home/accepttask',query:{task:this.task}});
+	  		}else{
+	  			this.$router.push({path:'/home',query:{page:1}});
 	  		}
 		},
 		clickBack: function(){
@@ -190,7 +210,12 @@ export default {
 		padding: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
-		font-size: 14px;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		font-size: 16px;
+		position: fixed;
+		z-index: 100;
 	}
 	.back{
 		width:25px; 

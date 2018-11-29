@@ -1,8 +1,11 @@
 <template>
 	<div style="overflow: auto; background-color: #F5F5F5">
 		<div class="top">
-			历史记录
+			<img src="../assets/icons/back.png" class="back" v-on:click="clickBack" >
+			<label>我的回答</label>
+			<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
 		</div>
+		<div style="padding-top: 45px"></div> 
 		<div class="content">
 			<div v-if="seen" class="note">
 			   没有历史任务
@@ -17,7 +20,7 @@
 				          <div class="taskHisListconcent">
 					          <label class="taskTitleCss">{{item.title}}</label><br>		
 					          <label class="option">地址：{{ item.location }}</label><br>
-					          <label class="time">完成时间：{{ item.time }}</label>					         
+					          <label class="time">回答时间：{{ item.time }}</label>					         
 				         </div>
 			        </div>
 			     
@@ -33,7 +36,8 @@
 			return {
 				username:'',
 				seen:'',
-				items: []
+				items: [],
+				//tid:20
 			}
 		} ,
         
@@ -45,8 +49,10 @@
 			this.$ajax({
 			      	method: 'PUT',
 			      	url: global.urlGetHistory,
+			      	//url: global.urlChooseAnswer,
 			      	data: {
 				        username: self.username
+				        //tid:self.tid
 			      	}
 			   	})
 				.then(function (response) {
@@ -69,6 +75,9 @@
 	    	goDetail: function(item){
 	    		console.log('-----------点击历史记录某一条数据-----------');
 				this.$router.push({path:"/Detail",query: {item:item} }) 
+			},
+			clickBack: function(){
+				this.$router.push({path:'/home',query:{page:1}});
 			}
 		} 
 			
@@ -78,10 +87,16 @@
 
 <style type="text/css">
 	.top{
+		text-align:center;
 		padding: 10px;
 		background-color: #4F5D73;
-		font-size: 14px;
 		color: #FFFFFF;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		font-size: 16px;
+		position: fixed;
+		z-index: 100;
 	}
 	.content{
 		position:relative;
@@ -141,6 +156,13 @@
     }
     .cont_ul{
     	list-style: none;
+    	overflow-y: auto;
+		overflow: auto;
     }
+    .back{
+		width:25px; 
+		height:25px;
+		float: left;
+	}
            
 </style>

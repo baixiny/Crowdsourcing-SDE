@@ -58,6 +58,10 @@
 				    	console.log('------------------登录成功，检查是否有问卷--------------');
 				    	//登录成功
 				    	localStorage.setItem('username',self.username);
+				    	//localStorage.setItem('auto',1);
+				    	//console.log(localStorage.getItem('auto'));
+				    	window.sessionStorage.setItem('auto',1);
+				    	console.log(sessionStorage.getItem('auto'));
 				    	//判断是否有问卷
 				    	//发送请求到服务器
 				    	self.$ajax({

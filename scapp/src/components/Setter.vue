@@ -98,7 +98,9 @@
 		padding: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
-		font-size: 14px;
+		font-size: 16px;
+		position: fixed;
+		z-index: 100;
 	}
 	.back{
 		width:25px; 

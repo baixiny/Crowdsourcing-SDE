@@ -6,7 +6,7 @@
 		<label>答案详情</label>
 		<label style="height:25px; width: 25px; background-color: #4F5D73 ; float: right"></label>
 	</div>
-
+	<div style="padding-top: 45px"></div> 
 	<div style="text-align: left">
 			<div class="titleCss">主题：{{info.task_description}}</div>
 		<div style="width: 90%; margin: auto;">
@@ -100,7 +100,7 @@
 
 		methods:{
 				clickBack: function(){
-					this.$router.push({path:'/home/history',query:{page:2}});
+					this.$router.push({path:'/home/history'});
 				}		
 			  }
     }
@@ -113,7 +113,12 @@
 		padding: 10px;
 		background-color: #4F5D73;
 		color: #FFFFFF;
-		font-size: 14px;
+		font-size: 16px;
+		top: 0;
+		height: 40px;
+		width: 100%;
+		position: fixed;
+		z-index: 100;
 	}
 	.back{
 		width:25px; 
