@@ -1,6 +1,7 @@
 package com.websystique.springmvc.responseform;
 
 public class res_tid {
+	private String tname;
 	private int tid;
 
 	public int getTid() {
@@ -13,7 +14,15 @@ public class res_tid {
 
 	@Override
 	public String toString() {
-		return "res_tid [tid=" + tid + "]";
+		return "res_tid [tname=" + tname + ", tid=" + tid + "]";
+	}
+
+	public String getTname() {
+		return tname;
+	}
+
+	public void setTname(String tname) {
+		this.tname = tname;
 	}
 	
 }

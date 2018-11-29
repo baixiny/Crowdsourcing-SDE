@@ -185,11 +185,14 @@ public class controller_pro {
 		 
 			return new ResponseEntity<JSONArray>(json,HttpStatus.OK);
 		} 
+		
+	
 			
 //----history 1--
 		@RequestMapping(value = "/history/sketch", method = RequestMethod.PUT)
 		public ResponseEntity<Result_history> historysketch(@RequestBody Answer user,HttpServletResponse response) {
 			System.out.println("正在根据用户名查询个人历史记录");
+			System.out.println(user);
 			SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance();   
 	        SqlSession sqlSession = sqlSessionFactory.openSession();  
 	        Answer_inter answer_inter=sqlSession.getMapper(Answer_inter.class);
@@ -226,6 +229,47 @@ public class controller_pro {
 			 
 			return new ResponseEntity<Result_history>(result, HttpStatus.OK);
 		} 
+
+		
+// choose best answer
+      @RequestMapping(value = "choose/answer",method = RequestMethod.PUT)
+      public ResponseEntity<Result_history> chooseanswer(@RequestBody Answer user ,HttpServletResponse response){
+          System.out.println("正在根据任务号查询所有答案");
+          SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance(); 
+          SqlSession sqlSession = sqlSessionFactory.openSession();   
+          Answer_inter answer_inter=sqlSession.getMapper(Answer_inter.class);   
+          Task_inter task_inter=sqlSession.getMapper(Task_inter.class);   
+          List<Answer> answer=answer_inter.findAnswer_tid(user.getTid());
+          Result_history result=new Result_history();
+          if(answer.isEmpty()){
+        	  result.setState(0);
+			  result.setError("该问题无人回答");
+          }else{
+        	  result.setState(1);
+  			List<h_msg> lh=new ArrayList<h_msg>();
+  			for(int i=0;i<answer.size();i++)
+  			{	
+  				Task task=task_inter.findTask(answer.get(i).getTid());
+  				
+  				h_msg m=new h_msg();
+  				m.setTid(answer.get(i).getTid());
+  				System.out.println(answer.get(i).getTid());
+  				m.setLocation(answer.get(i).getLocation());
+  				DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+  				String tsStr = sdf.format(answer.get(i).getTime()); 
+  				m.setTime(tsStr);
+  				m.setTitle(task.getDescription());
+  				m.setIcon("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+task.getUsername()+"/"+answer.get(i).getTid()+"/"+answer.get(i).getAid()+"/"+0);
+  				lh.add(m);
+  				  
+  			}
+  		System.out.println("输出的结果是"+lh);
+  			result.setMessage(lh);
+  			 
+  			
+          }return new ResponseEntity<Result_history>(result, HttpStatus.OK);
+      }
+ 
 			
 //---history2
 		@RequestMapping(value = "/history/detail", method = RequestMethod.PUT)
@@ -326,6 +370,7 @@ public class controller_pro {
 //------返回详细答案信息------
 		@RequestMapping(value = "/answer/detail", method = RequestMethod.PUT)
 		public ResponseEntity<JSONObject> getanswerdetail(@RequestBody JSONObject json) {
+			System.out.println(json);
 			SqlSessionFactory sqlSessionFactory =MybatisUtil.getInstance();
 			SqlSession sqlSession=sqlSessionFactory.openSession();
 			Answer_inter answer_inter=sqlSession.getMapper(Answer_inter.class);
@@ -596,20 +641,39 @@ public class controller_pro {
 			        SqlSession sqlSession = sqlSessionFactory.openSession();  
 					Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
 					Task task=task_inter.findTask(tid.getTid());
+					Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
+					
+					
 					System.out.println(tid.getTid());
 					System.out.println(task);
 					Result_cao result =new Result_cao();
 					if(task==null) {
 						result.setState(2);
 						result.setError("查找过程出错");
+						System.out.println("查找过程出错");
 						return new ResponseEntity<Result_cao>(result,HttpStatus.OK);
+					}else{
+						List<Answer> answer = answer_inter.findAnswer(tid.getTid(), tid.getTname());
+						System.out.println("这是answer"+answer);
+						if(answer.isEmpty() ){
+							result.setState(1);
+							System.out.println("可以回答问题");
+						}
+						else{
+							result.setState(0);
+						result.setError("已回答过此问题");
+						System.out.println("已回答过此问题");
+						} 
+						// 
 					}					
-					result.setState(1);
+					
 					//result.setMessage(task.getDescription(), task.getQuestion())
 				msg_cao msg=new msg_cao();
 				msg.setDescription(task.getDescription());
 				msg.setQuestion(task.getQuestion());
 				result.setMessage(msg);
+				sqlSession.commit();
+				sqlSession.close();
 				System.out.println(msg);
 					return new ResponseEntity<Result_cao>(result,HttpStatus.OK);
 					
@@ -668,9 +732,9 @@ public class controller_pro {
 			    @RequestMapping(value="/answer/add", method = RequestMethod.POST)	    
 					public ResponseEntity<result_task_add> addanswer(@RequestBody res_answeradd res,UriComponentsBuilder ucBuilder){
 						result_task_add result=new result_task_add();
-						System.out.println("进行答案上传阶段");
+						
 			try {
-				
+				System.out.println("进行答案上传阶段");
 					SqlSessionFactory sqlSessionFactory= MybatisUtil.getInstance(); 
 			        SqlSession sqlSession = sqlSessionFactory.openSession();  
 			        
@@ -687,12 +751,14 @@ public class controller_pro {
 			      Answer_inter answer_inter = sqlSession.getMapper(Answer_inter.class);
 			      Task_inter task_inter = sqlSession.getMapper(Task_inter.class);
 			      Task task=task_inter.findTask(res.getTid());
+			      
 			      if(task.getStatus().equals("已完成"))
 			      {
 			    	  result.setState(2);
 			    	  System.out.println("任务TID"+String.valueOf(res.getTid()));
 			      }
 			      else{
+			    	  
 			    	  int count=  answer_inter.listAnswer().size();
 				       Answer answer=new Answer();
 				       answer.setUsername(res.getUsername());
@@ -703,18 +769,24 @@ public class controller_pro {
 				       answer.setAnswer(ql);
 				       answer.setAid(count+1);
 				       aid=count;
-				       answer.setTid(res.getTid());
+				       answer.setTid(res.getTid());				       
 				       System.out.println(answer);
-				       answer_inter.addAnswer(answer);
+				       try{
+				    	   answer_inter.addAnswer(answer);
 				       task.setAnswercount(answer_inter.countAnswer(res.getTid()));
 				       task_inter.answerCount(task);
 				       sqlSession.commit();  
 				       sqlSession.close(); 
+				       }catch(Exception e) {
+				    	   System.out.println(e.toString());
+							}
+				       
 				       result.setState(1);
+				       
 				       System.out.println("else running"+String.valueOf(res.getTid()));
 			      }
 			      
-				
+			      
 						return new ResponseEntity<result_task_add>(result,HttpStatus.OK);
 						}catch(Exception e) {
 						result.setState(0);
