@@ -17,7 +17,7 @@ const urlGetQuestionnaire = url+'/question/ask';
 const urlUploadQuesnaire = url +'/question/answer';
 const urlGetTaskQuestionnaire = url + '/question/askone';
 const urlAddTask = url + '/task/addone';
-//const urlChooseAnswer = url + '/choose/answer'
+const urlChooseAnswer = url + '/choose/answer'
 
 
 
@@ -36,7 +36,7 @@ export default{
 	urlUploadQuesnaire,
 	urlGetTaskQuestionnaire,
 	urlAddTask,
-	//urlChooseAnswer,
+	urlChooseAnswer,
 
 }
 </script>
