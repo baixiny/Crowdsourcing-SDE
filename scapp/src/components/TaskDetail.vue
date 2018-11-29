@@ -70,15 +70,17 @@ export default {
 		self.username = localStorage.getItem('username');
 		self.task = self.$route.query.task;
 		console.log(self.task.id);
-<<<<<<< HEAD
-		self.taskInfo=response.data.message;
-=======
 		console.log(self.task.status);
 		/*self.taskInfo=response.data.message;
->>>>>>> 85e31d3a2f33f92e3bc8f40a7077c01dee7510a0
         self.quesArray=response.data.message.question; 
-        console.log(response.data.message.question);  
-
+        console.log(response.data.message.question);  */
+	    if (self.task.status == '已完成') {
+	        	self.msg = '已完成';
+	    }
+	    else if(self.task.username == self.username){
+	    		self.msg = '查看回答';
+	    }
+	    else{
 		var self = this;
         this.$ajax({
             method: 'PUT',
@@ -91,10 +93,8 @@ export default {
 	    .then(function (response) {
 	        console.log(response.data.state);
 	        console.log(response.data);
-	        if (self.task.status == '已完成') {
-	        	self.msg = '已完成';
-	        }
-	        else if(response.data.state == 1){
+
+	        if(response.data.state == 1){
 	        	self.msg = '可接受';
 	            self.taskInfo=response.data.message;
 	            self.quesArray=response.data.message.question; 
@@ -102,20 +102,15 @@ export default {
 	              
 	        }else if(response.data.state == 2){
 	            self.taskInfo = '该任务无详情';
-<<<<<<< HEAD
-	        }else   if(response.data.state == 0){
-	            self.taskInfo = '已回答过此问题';}        
-=======
 	        }else if(response.data.state == 0){
 	        	self.msg = '已回答';
 	        }           
->>>>>>> 85e31d3a2f33f92e3bc8f40a7077c01dee7510a0
 	    })
 	    .catch(function (response) {
 	            console.log(response);
 	            self.taskInfo = '网络连接失败:(';
 	    });
-		
+		}
 		console.log("mounted"+this.username);
 		var mapObj = new AMap.Map('amap-div',{
 		      //resizeEnable: true,
@@ -192,7 +187,10 @@ export default {
 	  			this.$router.push({path:'/home/questionnaireWithTask',query:{task:this.task, ask: this.ask}});
 	  		}else if(this.msg == '可接受'){
 	  			this.$router.push({path:'/home/accepttask',query:{task:this.task}});
-	  		}else{
+	  		}else if(this.msg == '查看回答'){
+	  			this.$router.push({path:'/home/choose',query:{task:this.task}});
+	  		}
+	  		else{
 	  			this.$router.push({path:'/home',query:{page:1}});
 	  		}
 		},
