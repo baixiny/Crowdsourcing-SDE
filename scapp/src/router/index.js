@@ -15,6 +15,7 @@ import PreQuestionnaire from '@/components/PreQuestionnaire'
 import QuestionnaireWithTask from '@/components/QuestionnaireWithTask'
 import AddTask from '@/components/AddTask'
 import GetPos from '@/components/GetPos'
+import ChooseAnswer from '@/components/ChooseAnswer'
 
 
 Vue.use(Router)
@@ -49,6 +50,7 @@ const routes = [
 	{path:'/home/accepttask',component: AcceptTask},
 	{path:'/home/setter',component: Setter},
 	{path:'/home/getpos',component: GetPos},
+	{path:'/home/choose',component: ChooseAnswer},
 	{path:'/questionnaire',component: Questionnaire},
 	{path:'/preQuestionnaire',component: PreQuestionnaire},
 	{path:'/home/questionnaireWithTask',component: QuestionnaireWithTask},

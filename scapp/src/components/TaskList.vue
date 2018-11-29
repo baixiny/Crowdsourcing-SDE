@@ -267,7 +267,7 @@
 				       //获得了有效的地址信息:
 				       //即，result.regeocode.formattedAddress
 				       console.log(result.regeocode.formattedAddress);
-				       localStorage.setItem('location',result.regeocode.formattedAddress);
+				       sessionStorage.setItem('location',result.regeocode.formattedAddress);
 				       self.msg = result.regeocode.formattedAddress;
 				    }else{
 				       //获取地址失败
