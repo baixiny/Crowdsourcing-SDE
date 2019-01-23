@@ -1,6 +1,8 @@
 package com.websystique.springmvc.controller;
 
 
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,8 +45,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
-
+import java.awt.Image;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import com.websystique.springmvc.CStable.*;
 import com.websystique.springmvc.CStable_interface.*;
@@ -599,7 +604,11 @@ public class controller_pro {
 									//System.out.println(String.valueOf(task.get(i).getId())+"任务未完成");
 								}
 								task_inter.changeStatus(task.get(i));
-							}							
+							}
+							List<Answer> answer=answer_inter.findAnswer_tid(task.get(i).getId());
+							
+							task.get(i).setAnswercount(answer.size());
+							task_inter.answerCount(task.get(i));
 						}						 
 						  sqlSession.commit();
 						  sqlSession.close();
@@ -1187,6 +1196,7 @@ public class controller_pro {
 						continue;
 					}
 					try {
+					//System.out.println(answer.get(i).getAid());
 					int m=answer.get(i).getTid();//获取到任务id
 					Task task=task_inter.findTask(m);
 					Answer_data data=new Answer_data();
@@ -1197,18 +1207,24 @@ public class controller_pro {
 					data.setAnswer_desc("选项型");
 					data.setTask_type(task.getTasktype());
 					data.setPublish_place(answer.get(i).getLocation());
-					data.setPic("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+answer.get(i).getUsername()+"/"+answer.get(i).getTid());
+					//data.setPic(answer.get(i).getPicpath());
+					data.setPic("http://211.87.239.31:8080/Spring4MVCCRUDRestService/image/"+answer.get(i).getUsername()+"/"+answer.get(i).getTid()+"/"+answer.get(i).getAid()+"/"+0);
 					DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 					String tsStr = sdf.format(task.getDeadline());  
 					data.setAnswer_time(tsStr);
 					
-					data.setAnswer(JSONArray.fromObject(answer.get(i).getAnswer()));
-					System.out.println(data);
+					String str=answer.get(i).getAnswer().toString();
+					String abc=str.replaceAll("\\\\", "");
+					String str1=abc.substring(1, abc.length()-1);
+					JSONArray ja=JSONArray.fromObject(str1);
+					
+					data.setAnswer(ja);
+					
 					
 					dataList.add(data);
 					}
 					catch(Exception e) {
-						System.out.println("exception");
+						System.out.println(e.toString());
 						continue;
 					}
 					
@@ -1324,14 +1340,15 @@ public class controller_pro {
 			    	data.setDesc(tasks.get(i).getDescription());
 			    	
 			    	
-			    	data.setExpect_answer_count(Integer.toString(tasks.get(i).getAnswercount()));
+			    	data.setExpect_answer_count(tasks.get(i).getAnswersnum());
 			    	data.setActual_answer_count(Integer.toString(answer.size()));
 			    	DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 					String time = sdf.format(tasks.get(i).getDeadline()); 
 			    	data.setEnd_time(time);
 			    	double x=answer.size();
-			    	double u=tasks.get(i).getAnswercount();
-			    	data.setTask_progress(x/u*100+"%");
+			    	double u=Double.parseDouble(tasks.get(i).getAnswersnum());
+			    	double rate = x/u*100;
+			    	data.setTask_progress(String.valueOf(rate)+"%");
 			    	Timestamp t = new Timestamp(System.currentTimeMillis());
 			    	
 			    	if(x/u==1||(t.after(tasks.get(i).getDeadline()))) {
@@ -1341,10 +1358,12 @@ public class controller_pro {
 			    	}
 			    	data.setPublish_time(sdf.format(tasks.get(i).getPublictime()));
 			    	data.setTask_question(JSONArray.fromObject(tasks.get(i).getQuestion()));
+			    	//System.out.println(tasks.get(i).getQuestion());
 			    	datalist.add(data);
 			    }
 			    result.setData(datalist);
 			    result.setMessage("success");
+			    System.out.println("管理员端查看任务列表");
 				return new ResponseEntity<Result_data_task>(result,HttpStatus.OK);
 			} 
 //---查询所有用户---
@@ -1361,7 +1380,6 @@ public class controller_pro {
 						result.setStatus(1);
 					
 						result.setError("error");
-						
 						return new ResponseEntity<Result_worker_list>(HttpStatus.OK);//You many decide to return HttpStatus.NOT_FOUND
 					}
 					List<User_data> datalist=new ArrayList<User_data>();
@@ -1375,6 +1393,7 @@ public class controller_pro {
 						data.setPhone_number(workers.get(i).getPhoneno());
 						datalist.add(data);
 					}
+					
 					result.setStatus(0);
 					result.setData(datalist);
 					result.setMessage("success");
@@ -1391,7 +1410,7 @@ public class controller_pro {
 					List<Answer> answer=answer_inter.listAnswer();
 					
 				
-					
+					System.out.println("管理员端查看答案详情");
 					return new ResponseEntity<JSONArray>(JSONArray.fromObject(answer), HttpStatus.OK);
 				} 
 //----显示图片----
@@ -1421,15 +1440,37 @@ public class controller_pro {
 					        OutputStream os = null;  
 					        try {  
 					            fis = new FileInputStream(path); 
-					        
-					           
-					            os = response.getOutputStream();  
+					            
+					            double rate = 0.1; //rate是压缩比率  1为原图  0.1为最模糊
+								File pf = new File(path);
+								int[] results = getImgWidth(pf );
+								int widthdist = 0;
+								int heightdist = 0;
+								if (results == null || results[0] == 0 || results[1] == 0) {
+									return "fail";
+								} else {
+									widthdist = (int) (results[0] * rate);
+									heightdist = (int) (results[1] * rate);
+								}
+								BufferedImage src = javax.imageio.ImageIO.read(pf);
+								BufferedImage tag = new BufferedImage((int) widthdist, (int) heightdist,
+										BufferedImage.TYPE_INT_RGB);
+				 
+								tag.getGraphics().drawImage(src.getScaledInstance(widthdist, heightdist,  Image.SCALE_SMOOTH), 0, 0,
+										null);
+								os = response.getOutputStream();
+								ImageIO.write(tag, "jpg", os);
+								os.close();
+				
+					      /*      os = response.getOutputStream();  
 					            int count = 0;
 					            byte[] buffer = new byte[1024 * 8];  
 					            while ((count = fis.read(buffer)) != -1) {  
 					                os.write(buffer, 0, count);  
 					                os.flush();  
+					                
 					            }  
+					            */
 					        } catch (Exception e) {  
 					            e.printStackTrace();  
 					        }  
@@ -1479,5 +1520,22 @@ public class controller_pro {
 
 	
 				        return "ok";  
-				    }  
+				    }
+
+			    public static int[] getImgWidth(File file) {
+					InputStream is = null;
+					BufferedImage src = null;
+					int result[] = { 0, 0 };
+					try {
+						is = new FileInputStream(file);
+						src = javax.imageio.ImageIO.read(is);
+						result[0] = src.getWidth(null); // 得到源图宽
+						result[1] = src.getHeight(null); // 得到源图高
+						is.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return result;
+				}
+			
 }
